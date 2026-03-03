@@ -1,5 +1,5 @@
 const express = require('express');
-const { conectarDB } = require('./config/db'); // Ahora funcionará porque el export tiene la 's'
+const { conectarDB } = require('./config/db');
 require('dotenv').config();
 
 const app = express();
@@ -13,6 +13,5 @@ app.get('/', (req, res) => {
 });
 
 app.listen(PORT, () => {
-    // Usamos backticks `` para que funcione la variable ${PORT}
-    console.log(`🚀 Servidor corriendo en http://localhost:${PORT}`);
+    console.log(` Servidor corriendo en http://localhost:${PORT}`);
 });

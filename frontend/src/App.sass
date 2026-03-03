@@ -1,3 +1,5 @@
+// src/App.sass
+
 // Variables de colores
 $bg-dark: #0f172a
 $neon-blue: #00f2ff
@@ -11,9 +13,11 @@ body
   color: $text-white
   font-family: 'Inter', sans-serif
 
+// Contenedor principal de la aplicación
 .app-container
   min-height: 100vh
 
+// Barra de navegación
 .navbar
   padding: 1rem 2rem
   border-bottom: 1px solid rgba($neon-blue, 0.3)
@@ -24,4 +28,55 @@ body
   h1
     color: $neon-blue
     text-shadow: 0 0 10px rgba($neon-blue, 0.5)
+
+// Enlaces del navbar
+.navbar-links
+  list-style: none
+  padding: 0
+  margin: 0
+  display: flex
+
+  li
+    margin-right: 1rem
+
+  a
+    color: $text-white
+    text-decoration: none
+    font-weight: 600
+
+    &:hover
+      color: $neon-blue
+      text-decoration: underline
+
+// Contenido principal de la aplicación
+.main-content
+  padding: 2rem
+
+// Pie de página
+.footer
+  background-color: $bg-dark
+  color: $text-white
+  padding: 1rem
+  text-align: center
+  position: fixed
+  width: 100%
+  bottom: 0
+
+.footer-content
+  p
     margin: 0
+
+.footer-links
+  list-style: none
+  padding: 0
+  margin: 1rem 0 0 0
+  display: flex
+  justify-content: center
+
+  a
+    color: $text-white
+    margin: 0 1rem
+    text-decoration: none
+
+    &:hover
+      color: $neon-blue

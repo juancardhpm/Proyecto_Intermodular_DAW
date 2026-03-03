@@ -1,4 +1,4 @@
-const { Sequelize } = require('sequelize');
+const { Sequelize } = require('sequelize'); //Importo la libreria Sequelize
 require('dotenv').config();  //Esta linea de codigo carga las varibales del .env que vamos a poner para encriptar las mismas
 
 // Ahora configuramos la instancia de sequelize

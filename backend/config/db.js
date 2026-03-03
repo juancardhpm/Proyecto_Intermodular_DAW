@@ -26,16 +26,16 @@ const sequelize = new Sequelize(
 
 
 // Creo una funcion para revisar que la conexion funcina correctamente le hago un try/catch con funcion asincrona, ya que esperamos respuesta de Sequelize
-const conectarBD = async () => {
+const conectarDB = async () => {
     try {
         await sequelize.authenticate();
         console.log('Base de datos conectada correctamente');
         
     } catch (error) {
-        console.error('Error en la conexion con la base de datos');
-        procces.exit(1); //Aqui detengo la app si no hay una base de datos conectada
+        console.error('Error en la conexion con la base de datos', error.message);
+        process.exit(1); //Aqui detengo la app si no hay una base de datos conectada
     }
 };
 
 // Y como no, exporto los modulos
-module.export = {sequelize, conectarBD };
+module.exports = {sequelize, conectarDB };

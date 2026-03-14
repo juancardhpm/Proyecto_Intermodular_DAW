@@ -37,5 +37,5 @@ const conectarDB = async () => {
     }
 };
 
-// Y como no, exporto los modulos
+// Exporto los modulos
 module.exports = {sequelize, conectarDB };

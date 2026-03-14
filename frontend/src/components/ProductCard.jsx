@@ -1,17 +1,16 @@
-// src/components/ProductCard.jsx
-import React from "react";
-import { Link } from "react-router-dom";
+// frontend/src/components/ProductCard.jsx
+import React from 'react';
 
-function ProductCard({ product }) {
+const ProductCard = ({ product }) => {
   return (
     <div className="product-card">
-      <img src={`path_to_images/${product.name}.jpg`} alt={product.name} />
+      <img src={product.imageUrl} alt={product.name} />
       <h3>{product.name}</h3>
-      <p>{product.category}</p>
-      <p>Price: {product.price}</p>
-      <Link to={`/product/${product.id}`}>View Details</Link>
+      <p>{product.description}</p>
+      <span>{product.price}€</span>
+      <button>Add to Cart</button> {/* Aquí puedes añadir la funcionalidad para agregar al carrito */}
     </div>
   );
-}
+};
 
 export default ProductCard;

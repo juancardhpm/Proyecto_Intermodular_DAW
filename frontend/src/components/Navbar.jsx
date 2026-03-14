@@ -1,19 +1,19 @@
 
-import React from "react";
-import { Link } from "react-router-dom";
+//Creamos el componente de navegación que se mostrará en todas las páginas de la aplicación. 
+// Este componente incluirá enlaces a las diferentes secciones del sitio, como el catálogo de productos, el carrito de compras y la página de inicio.
 
-function Navbar() {
+import React from 'react';
+
+const Navbar = () => {
   return (
-    <nav className="navbar">
-      <div className="navbar-logo">Gaming Store</div>
-      <ul className="navbar-links">
-        <li><Link to="/">Home</Link></li>
-        <li><Link to="/login">Login</Link></li>
-        <li><Link to="/register">Register</Link></li>
-        <li><Link to="/admin">Admin</Link></li>
+    <nav>
+      <ul>
+        <li><a href="/">Home</a></li>
+        <li><a href="/catalog">Catálogo</a></li>
+        <li><a href="/cart">Carrito</a></li>
       </ul>
     </nav>
   );
-}
+};
 
 export default Navbar;

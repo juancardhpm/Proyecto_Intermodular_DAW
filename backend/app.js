@@ -14,7 +14,7 @@ connectDB();
 
 // Rutas
 app.use('/api/auth', authRoutes);
-/* app.use('/api/products', productRoutes); */
+app.use('/api/products', productRoutes);
 app.use('/api/cart', cartRoutes);  // Registramos las rutas del carrito
 
 app.listen(3000, () => {

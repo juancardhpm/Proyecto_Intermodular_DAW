@@ -4,6 +4,24 @@ const Cart = require('../models/Cart');
 const CartDetails = require('../models/CartDetails')
 
 
+// Obtener los productos del carrito
+exports.getCartItems = async (req, res) => {
+  try {
+    const { user_id } = req.query; // O req.params según cómo lo hayas diseñado
+    const cart = await Cart.findOne({ where: { user_id, status: 'active' } });
+    
+    if (!cart) {
+      return res.status(404).json({ message: 'Carrito no encontrado' });
+    }
+
+    const items = await CartDetails.findAll({ where: { cart_id: cart.id } });
+    res.status(200).json(items);
+  } catch (error) {
+    res.status(500).json({ message: 'Error al obtener los productos del carrito', error: error.message });
+  }
+};
+
+
 // Añadir producto al carrito
 exports.addToCart = async (req, res) => {
   // Recibimos el ID del usuario, el ID del producto y la cantidad
@@ -27,6 +45,7 @@ exports.addToCart = async (req, res) => {
     res.status(500).json({ message: 'Error al añadir producto al carrito' });
   }
 };
+
 
 // Actualizar cantidad de producto en el carrito
 exports.updateCart = async (req, res) => {
@@ -53,6 +72,7 @@ exports.updateCart = async (req, res) => {
     res.status(500).json({ message: 'Error al actualizar el carrito' });
   }
 };
+
 
 // Eliminar producto del carrito
 exports.removeFromCart = async (req, res) => {

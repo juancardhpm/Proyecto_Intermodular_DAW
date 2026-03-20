@@ -3,7 +3,7 @@ const router = express.Router();
 const productController = require('../controllers/productController');
 
 // Aqui voy añadir publicas para los clientes
-router.get('/', productController.getAllProduct)
+router.get('/', productController.getAllProducts)
 router.get('/:id', productController.getProductById);
 
 // Aqui añado las rutas protegidas, ya que estas serian solamente para el admin. Mas adelante se añadiran los middleware)

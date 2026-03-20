@@ -147,8 +147,8 @@ CREATE TABLE `usuarios` (
   `apellidos` varchar(150) NOT NULL,
   `email` varchar(150) NOT NULL,
   `password` varchar(255) NOT NULL,
-  `direccion` varchar(255) DEFAULT NULL,
-  `telefono` varchar(20) DEFAULT NULL,
+  `direccion` varchar(255) NOT NULL,
+  `telefono` varchar(20) NOT NULL,
   `rol` enum('cliente','admin') DEFAULT 'cliente',
   `fecha_registro` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;

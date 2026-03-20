@@ -13,7 +13,7 @@ const User = sequelize.define('User', {
     primaryKey: true,
     autoIncrement: true,
   },
-  name: {
+  nombre: {
     type: DataTypes.STRING,
     allowNull: false,
   },
@@ -26,10 +26,22 @@ const User = sequelize.define('User', {
     type: DataTypes.STRING,
     allowNull: false,
   },
+  direccion: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  telefono: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
   role: {
     type: DataTypes.ENUM('cliente', 'admin'),
     defaultValue: 'cliente',
   },
+  fecha_registro: {
+    type: DataTypes.DATE,
+    defaultValue: DataTypes.NOW
+  }
 });
 
 module.exports = User;

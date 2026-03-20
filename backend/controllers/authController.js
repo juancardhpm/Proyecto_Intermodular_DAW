@@ -1,35 +1,93 @@
-
-// Crea el controlador que maneja las solicitudes de autenticación, como el registro y el inicio de sesión.
-// Aquí implementaremos la lógica para registrar nuevos usuarios, verificar sus credenciales durante el inicio de sesión y manejar cualquier error que pueda surgir durante estos procesos.
-
 const bcrypt = require('bcryptjs');
-const User = require('../models/User');
+const jwt = require('jsonwebtoken');
+const { User } = require('../models'); // Importamos el modelo User desde el index de modelos
 
-// Registro de usuario
+/**
+ * CONTROLADOR DE REGISTRO
+ * Se encarga de validar, encriptar y guardar nuevos usuarios.
+ */
 exports.register = async (req, res) => {
-  const { name, email, password } = req.body;
-  const hashedPassword = await bcrypt.hash(password, 10);
-
   try {
-    const newUser = await User.create({ name, email, password: hashedPassword });
-    res.status(201).json(newUser);
+    const { nombre, email, password, rol } = req.body;
+
+    // 1. VALIDACIÓN: Comprobamos si el email ya existe para evitar duplicados en la BD
+    const existingUser = await User.findOne({ where: { email } });
+    if (existingUser) {
+      return res.status(400).json({ message: 'El correo electrónico ya está registrado' });
+    }
+
+    // 2. SEGURIDAD: Encriptamos la contraseña antes de guardarla (10 rondas de salt)
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    // 3. PERSISTENCIA: Creamos el usuario con la contraseña cifrada
+    // Si no se especifica un rol en el body, se asigna 'cliente' por defecto
+    const newUser = await User.create({ 
+      nombre, 
+      email, 
+      password: hashedPassword,
+      rol: rol || 'cliente' 
+    });
+
+    // 4. RESPUESTA: Enviamos éxito (201 Created)
+    res.status(201).json({ 
+      message: 'Usuario registrado con éxito', 
+      usuarioId: newUser.id 
+    });
+
   } catch (error) {
-    res.status(500).json({ message: 'Error al registrar el usuario' });
+    // Error de servidor (500)
+    res.status(500).json({ 
+      message: 'Error al registrar el usuario', 
+      error: error.message 
+    });
   }
 };
 
-// Login de usuario
+/**
+ * CONTROLADOR DE LOGIN
+ * Verifica credenciales y genera el token JWT para el acceso a rutas protegidas.
+ */
 exports.login = async (req, res) => {
-  const { email, password } = req.body;
   try {
+    const { email, password } = req.body;
+
+    // 1. BÚSQUEDA: Intentamos encontrar al usuario por su email
     const user = await User.findOne({ where: { email } });
-    if (!user) return res.status(400).json({ message: 'Usuario no encontrado' });
+    if (!user) {
+      return res.status(400).json({ message: 'Usuario no encontrado' });
+    }
 
+    // 2. VERIFICACIÓN: Comparamos la password del login con el hash de la BD
     const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) return res.status(400).json({ message: 'Contraseña incorrecta' });
+    if (!isMatch) {
+      return res.status(400).json({ message: 'Contraseña incorrecta' });
+    }
 
-    res.status(200).json({ message: 'Inicio de sesión exitoso' });
+    // 3. GENERACIÓN DE TOKEN: Creamos el "pase" firmado con los datos del usuario
+    // IMPORTANTE: Incluimos el 'rol' para que el adminMiddleware pueda leerlo después
+    const token = jwt.sign(
+      { 
+        id: user.id, 
+        email: user.email, 
+        rol: user.rol // Clave para el Control de Acceso basado en Roles (RBAC)
+      }, 
+      process.env.JWT_SECRET || 'clave_secreta_tfg', // Clave de cifrado
+      { expiresIn: '4h' } // El token caducará en 4 horas por seguridad
+    );
+
+    // 4. RESPUESTA: Enviamos el token al frontend para que lo guarde
+    res.status(200).json({ 
+      message: 'Inicio de sesión exitoso',
+      token,
+      user: { 
+        id: user.id, 
+        nombre: user.nombre, 
+        rol: user.rol 
+      }
+    });
+
   } catch (error) {
+    console.error('Error en login:', error);
     res.status(500).json({ message: 'Error al iniciar sesión' });
   }
 };

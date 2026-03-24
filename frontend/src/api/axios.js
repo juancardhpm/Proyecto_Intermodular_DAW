@@ -10,4 +10,41 @@ const api = axios.create({
   timeout: 10000,  // Tiempo máximo de espera para las respuestas
 });
 
+// / --- INTERCEPTOR DE PETICIONES (Request) ---
+// Este código se ejecuta ANTES de que la petición salga hacia el backend
+api.interceptors.request.use(
+  (config) => {
+    // 1. Buscamos el token en el almacenamiento local del navegador
+    const token = localStorage.getItem('token');
+    
+    // 2. Si el token existe, lo añadimos automáticamente a las cabeceras
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+    
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
+
+
+// --- INTERCEPTOR DE RESPUESTAS (Response) ---
+// Este código se ejecuta cuando el backend responde
+api.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    // Si el servidor responde con 401 (No autorizado) o 403 (Prohibido)
+    // es probable que el token haya caducado o sea inválido
+    if (error.response && (error.response.status === 401 || error.response.status === 403)) {
+      console.warn("Sesión caducada o sin permisos. Redirigiendo al login...");
+      // Opcional: Borrar token y redirigir
+      // localStorage.removeItem('token');
+      // window.location.href = '/login';
+    }
+    return Promise.reject(error);
+  }
+);
+
 export default api;

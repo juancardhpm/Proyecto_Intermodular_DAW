@@ -51,3 +51,4 @@ const Checkout = ({ cartItems, total }) => {
 };
 
 export default Checkout;
+

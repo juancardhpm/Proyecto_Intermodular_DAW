@@ -1,30 +1,30 @@
-# # ==========================================
-# # 1. DEPENDENCIAS Y COMPILACIÓN
-# # ==========================================
-# # Ignora las librerías de todos los subproyectos
+# # # ==========================================
+# # # 1. DEPENDENCIAS Y COMPILACIÓN
+# # # ==========================================
+# # # Ignora las librerías de todos los subproyectos
 # node_modules/
 # back/node_modules/
 # end/node_modules/
 
-# # Ignora las carpetas de construcción (build/dist)
+# # # Ignora las carpetas de construcción (build/dist)
 # dist/
 # dist-ssr/
 # end/dist/
 # *.local
 
-# # ==========================================
-# # 2. SEGURIDAD Y CONFIGURACIÓN (CRÍTICO)
-# # ==========================================
-# # Ignora archivos de variables de entorno en cualquier carpeta
+# # # ==========================================
+# # # 2. SEGURIDAD Y CONFIGURACIÓN (CRÍTICO)
+# # # ==========================================
+# # # Ignora archivos de variables de entorno en cualquier carpeta
 # .env
 # .env.local
 # .env.*.local
 # back/.env
 # end/.env.local
 
-# # ==========================================
-# # 3. LOGS Y TEMPORALES
-# # ==========================================
+# # # ==========================================
+# # # 3. LOGS Y TEMPORALES
+# # # ==========================================
 # logs
 # *.log
 # npm-debug.log*
@@ -34,18 +34,18 @@
 # lerna-debug.log*
 # database/*.log
 
-# # ==========================================
-# # 4. DOCUMENTACIÓN Y DISEÑO
-# # ==========================================
-# # Ignora archivos temporales de Word/Excel (empiezan por ~$)
+# # # ==========================================
+# # # 4. DOCUMENTACIÓN Y DISEÑO
+# # # ==========================================
+# # # Ignora archivos temporales de Word/Excel (empiezan por ~$)
 # docs/~*
 # # Ignora miniaturas del sistema
 # .DS_Store
 # Thumbs.db
 
-# # ==========================================
-# # 5. CONFIGURACIÓN DE EDITORES (IDE)
-# # ==========================================
+# # # ==========================================
+# # # 5. CONFIGURACIÓN DE EDITORES (IDE)
+# # # ==========================================
 # .vscode/*
 # !.vscode/extensions.json
 # .idea/

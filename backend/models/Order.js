@@ -3,7 +3,8 @@
 const { DataTypes } = require('sequelize');
 const { sequelize } = require('../config/db');
 
-const Order = sequelize.define('Order', {
+// Ponemos en nombre de la tabla de la bbdd
+const Order = sequelize.define('pedidos', {
    id: {
         type: DataTypes.INTEGER,
         primaryKey: true,

@@ -3,7 +3,9 @@
 const { DataTypes } = require('sequelize');
 const { sequelize } = require('../config/db');
 
-const Payment = sequelize.define('Payment', {
+
+// Ponemos en nombre de la tabla de la bbdd
+const Payment = sequelize.define('pagos', {
     id: {
         type: DataTypes.INTEGER,
         primaryKey: true,

@@ -8,7 +8,7 @@ const { User } = require('../models'); // Importamos el modelo User desde el ind
  */
 exports.register = async (req, res) => {
   try {
-    const { nombre, email, password, rol } = req.body;
+    const { nombre, apellidos, email, direccion, telefono, password, rol } = req.body;
 
     // 1. VALIDACIÓN: Comprobamos si el email ya existe para evitar duplicados en la BD
     const existingUser = await User.findOne({ where: { email } });
@@ -23,7 +23,10 @@ exports.register = async (req, res) => {
     // Si no se especifica un rol en el body, se asigna 'cliente' por defecto
     const newUser = await User.create({ 
       nombre, 
+      apellidos,
       email, 
+      direccion,
+      telefono,
       password: hashedPassword,
       rol: rol || 'cliente' 
     });
@@ -89,5 +92,12 @@ exports.login = async (req, res) => {
   } catch (error) {
     console.error('Error en login:', error);
     res.status(500).json({ message: 'Error al iniciar sesión' });
+    console.error("--- ERROR DETALLADO ---");
+    console.error(error); // Esto imprimirá el error real de SQL en la terminal
+    res.status(500).json({ 
+      message: 'Error al registrar', 
+      error: error.message,
+      sqlError: error.parent?.sqlMessage // Esto te dirá qué columna falta
+    });
   }
 };

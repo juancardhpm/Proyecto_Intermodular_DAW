@@ -1,10 +1,12 @@
 // Creamos un modelo intermedio 'CartDetails' para gestionar la relación N:M entre los carritos y los productos.
 // Un carrito puede tener muchos productos, y un producto puede estar en muchos carritos diferentes.
 
+
+// Ponemos en nombre de la tabla de la bbdd
 const { DataTypes } = require('sequelize');
 const { sequelize } = require('../config/db');
 
-const CartDetails = sequelize.define('CartDetails', {
+const CartDetails = sequelize.define('detalles_carrito', {
   id: {
     type: DataTypes.INTEGER,
     primaryKey: true,

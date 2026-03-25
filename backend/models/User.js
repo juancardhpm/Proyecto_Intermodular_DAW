@@ -7,7 +7,9 @@
 const { DataTypes } = require('sequelize');
 const { sequelize } = require('../config/db');
 
-const User = sequelize.define('User', {
+
+// Ponemos en nombre de la tabla de la bbdd
+const User = sequelize.define('usuarios', {
   id: {
     type: DataTypes.INTEGER,
     primaryKey: true,
@@ -16,6 +18,10 @@ const User = sequelize.define('User', {
   nombre: {
     type: DataTypes.STRING,
     allowNull: false,
+  },
+  apellidos: {
+    type: DataTypes.STRING,
+    allowNull: false
   },
   email: {
     type: DataTypes.STRING,
@@ -34,7 +40,7 @@ const User = sequelize.define('User', {
     type: DataTypes.STRING,
     allowNull: false,
   },
-  role: {
+  rol: {
     type: DataTypes.ENUM('cliente', 'admin'),
     defaultValue: 'cliente',
   },

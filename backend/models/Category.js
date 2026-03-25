@@ -2,7 +2,9 @@
 const { DataTypes } = require('sequelize');
 const { sequelize } = require('../config/db');
 
-const Category = sequelize.define('Category', {
+
+// Ponemos en nombre de la tabla de la bbdd
+const Category = sequelize.define('categorias', {
     id: {
         type: DataTypes.INTEGER,
         primaryKey: true,

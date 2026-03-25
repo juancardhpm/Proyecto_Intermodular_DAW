@@ -1,8 +1,8 @@
 const { DataTypes } = require('sequelize');
 const { sequelize } = require('../config/db');
 
-
-const OrderDetail = sequelize.define('OrderDetail', {
+// Ponemos en nombre de la tabla de la bbdd
+const OrderDetail = sequelize.define('detalles_pedido', {
     id: {
         type: DataTypes.INTEGER,
         primaryKey: true,

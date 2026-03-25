@@ -11,6 +11,7 @@ const db = {};
 
 // Ahora lo que hacemso es importas todos los modelos
 // Le pasamos la conexion (sequelize) y los tipos de datos (DataTypes)
+// Aqui se pone el nombre de los archivos de los modelos
 db.User = require('./User');
 db.Category = require('./Category');
 db.Product = require('./Product');

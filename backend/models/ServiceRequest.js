@@ -2,7 +2,9 @@
 const { DataTypes } = require('sequelize');
 const { sequelize } = require('../config/db');
 
-const ServiceRequest =  sequelize.define('ServiceRequest', {
+
+// Ponemos en nombre de la tabla de la bbdd
+const ServiceRequest =  sequelize.define('solicitud_servicio', {
     id: {
         type: DataTypes.INTEGER,
         primaryKey: true,

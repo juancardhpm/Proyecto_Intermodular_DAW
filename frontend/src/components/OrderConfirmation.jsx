@@ -1,8 +1,3 @@
-<<<<<<< HEAD
-
-
-=======
->>>>>>> c16d48aab0227372d41ef8b936e7b54ae8fa31cd
 import React from 'react';
 import { useLocation } from 'react-router-dom';
 
@@ -21,8 +16,5 @@ const OrderConfirmation = () => {
   );
 };
 
-<<<<<<< HEAD
+
 export default OrderConfirmation;
-=======
-export default OrderConfirmation;
->>>>>>> c16d48aab0227372d41ef8b936e7b54ae8fa31cd

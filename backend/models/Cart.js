@@ -1,10 +1,11 @@
 // Creamos el modelo 'Cart' para gestionar los carritos de compra de los usuarios.
 // Este modelo tiene un ID único, un campo para identificar al usuario y el estado del carrito (activo, completado, abandonado).
 
+// Ponemos en nombre de la tabla de la bbdd
 const { DataTypes } = require('sequelize');
 const { sequelize } = require('../config/db');
 
-const Cart = sequelize.define('Cart', {
+const Cart = sequelize.define('carrito', {
   id: {
     type: DataTypes.INTEGER,
     primaryKey: true,

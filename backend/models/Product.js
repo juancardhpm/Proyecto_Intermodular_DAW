@@ -2,7 +2,9 @@
 const { DataTypes } = require('sequelize');
 const { sequelize } = require('../config/db'); // Importamos la conexión directamente
 
-const Product = sequelize.define('Product', {
+
+// Ponemos en nombre de la tabla de la bbdd
+const Product = sequelize.define('productos', {
     id: {
         type: DataTypes.INTEGER,
         primaryKey: true,

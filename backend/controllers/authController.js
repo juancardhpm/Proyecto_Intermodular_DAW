@@ -89,15 +89,16 @@ exports.login = async (req, res) => {
       }
     });
 
-  } catch (error) {
-    console.error('Error en login:', error);
-    res.status(500).json({ message: 'Error al iniciar sesión' });
-    console.error("--- ERROR DETALLADO ---");
-    console.error(error); // Esto imprimirá el error real de SQL en la terminal
-    res.status(500).json({ 
-      message: 'Error al registrar', 
+} catch (error) {
+    console.error('--- ERROR DETALLADO EN LOGIN ---');
+    console.error(error); 
+
+    // Solo enviamos UNA respuesta de error
+    return res.status(500).json({ 
+      message: 'Error al iniciar sesión', 
       error: error.message,
-      sqlError: error.parent?.sqlMessage // Esto te dirá qué columna falta
+      // Esto es muy útil durante el desarrollo para saber qué falla en la base de datos
+      sqlError: error.parent?.sqlMessage 
     });
   }
 };

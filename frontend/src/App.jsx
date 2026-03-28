@@ -8,6 +8,9 @@ import Cart from './components/Cart';  // Página del carrito
 import Checkout from './components/Checkout';  // Página de checkout (pago)
 import Login from './pages/Login'; //Pagina de login
 import Register from './pages/Register'; //Pagina de registro
+import AdminProducts from './components/AdminProducts';
+import ProtectedRoute from './components/ProtectedRoute';
+import AdminCategories  from './components/AdminCategories';
 
 const App = () => {
   return (
@@ -19,7 +22,13 @@ const App = () => {
         <Route path="/cart" element={<Cart />} />  {/* Página del carrito */}
         <Route path="/checkout" element={<Checkout />} />  {/* Página de checkout */}
         <Route path="/login" element={<Login />} />   {/* Pagina de Login */}
-        <Route path='register' element={<Register />} />  {/* Pagina de registro */} 
+        <Route path='/register' element={<Register />} />  {/* Pagina de registro */}
+        <Route path="/admin/categorias" element={<AdminCategories />} /> {/* 2. Crea la ruta */}
+        <Route path='/admin' element={
+          <ProtectedRoute>
+            <AdminProducts />
+          </ProtectedRoute>
+        } />
       </Routes>
     </Router>
   );

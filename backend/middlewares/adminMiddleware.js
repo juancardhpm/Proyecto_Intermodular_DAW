@@ -1,11 +1,11 @@
 /**
  * MIDDLEWARE DE AUTORIZACIÓN PARA ADMINISTRADORES
- * Este filtro se ejecuta DESPUÉS del authMiddleware.
+ * Este filtro se ejecuta DESPUÉS del authMiddleware (o verifyToken).
  * Su objetivo es verificar si el usuario tiene el rol necesario.
  */
-const adminMiddleware = (req, res, next) => {
+const isAdmin = (req, res, next) => {
     // 1. REVISIÓN DE DATOS: 
-    // Gracias al authMiddleware, los datos del usuario ya están en 'req.user'
+    // Gracias al middleware anterior, los datos del usuario ya están en 'req.user'
     // porque los extrajimos del Token JWT previamente.
     
     // 2. VERIFICACIÓN DE ROL:
@@ -14,7 +14,7 @@ const adminMiddleware = (req, res, next) => {
         
         // 3. ACCESO CONCEDIDO:
         // Si es administrador, llamamos a next() para que la petición
-        // continúe hacia el controlador (ej: getAllOrders)
+        // continúe hacia el controlador (ej: crear o borrar productos)
         next();
         
     } else {
@@ -28,4 +28,6 @@ const adminMiddleware = (req, res, next) => {
     }
 };
 
-module.exports = adminMiddleware;
+// Lo exportamos como un objeto para que puedas hacer: 
+// const { isAdmin } = require('./adminMiddleware');
+module.exports = { isAdmin };

@@ -12,7 +12,8 @@ const Category = sequelize.define('categorias', {
     },
     nombre: {
         type: DataTypes.STRING,
-        allowNull: false
+        allowNull: false,
+        unique: true //Aqui evito categorias duplicadas
     },
     descripcion: DataTypes.TEXT
 }, {

@@ -1,28 +1,29 @@
 const express = require('express');
 const router = express.Router();
 const orderController = require('../controllers/orderController');
-const authMiddleware = require('../middlewares/authMiddleware');
+const { verifyToken } = require('../middlewares/authMiddleware');
+const { isAdmin } = require('../middlewares/adminMiddleware');
 
 /**
  * RUTAS DE PEDIDOS (API: /api/orders)
  */
 
 // 1. Checkout (POST /api/orders/checkout)
-router.post('/checkout', authMiddleware, orderController.createOrder); 
+router.post('/checkout', verifyToken, orderController.createOrder); 
 
 // 2. Pedidos de un usuario
-router.get('/user/:usuario_id', authMiddleware, orderController.getUserOrders);
+router.get('/user/:usuario_id', verifyToken, orderController.getUserOrders);
 
 // 3. Detalles de un pedido
-router.get('/:id',authMiddleware, orderController.getOrderById);
+router.get('/:id', verifyToken, orderController.getOrderById);
 
 // 4. Todos los pedidos (Admin)
-router.get('/', authMiddleware,  orderController.getAllOrders);
+router.get('/', verifyToken,  orderController.getAllOrders);
 
 // 5. Actualizar estado (Admin)
-router.put('/:id/status', authMiddleware, orderController.updateOrderStatus);
+router.put('/:id/status', verifyToken, isAdmin, orderController.updateOrderStatus);
 
 // 6. Cancelar pedido
-router.delete('/:id', authMiddleware, orderController.cancelOrder);
+router.delete('/:id', verifyToken, isAdmin, orderController.cancelOrder);
 
 module.exports = router;

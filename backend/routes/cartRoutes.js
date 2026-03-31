@@ -1,9 +1,10 @@
-// backend/routes/cartRoutes.js
 const express = require('express');
 const router = express.Router();
 const cartController = require('../controllers/cartController');
 
-// Ruta para obtener los productos del carrito
 router.get('/', cartController.getCartItems);
+router.post('/add', cartController.addToCart); // Esta es la que usa ProductCard
+router.delete('/remove', cartController.removeFromCart);
+router.put('/update', cartController.updateCart);
 
 module.exports = router;

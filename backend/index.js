@@ -3,7 +3,7 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors'); 
 const { conectarDB } = require('./config/db');
-const db = require('./models'); // Importante para cargar las relaciones (belongsTo, etc.)
+const db = require('./models'); 
 
 // 1. Importar todas tus rutas
 const authRoutes = require('./routes/authRoutes');
@@ -11,18 +11,19 @@ const productRoutes = require('./routes/productRoutes');
 const cartRoutes = require('./routes/cartRoutes');
 const orderRoutes = require('./routes/orderRoutes');
 const categoryRoutes = require('./routes/categoryRoutes');
+const serviceRoutes = require('./routes/serviceRoutes'); // <--- NUEVA RUTA IMPORTADA
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
 // 2. Configuración de Middlewares
 app.use(cors({
-    origin: 'http://localhost:5173', // URL de tu React/Vue
+    origin: 'http://localhost:5173', 
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     allowedHeaders: ['Content-Type', 'Authorization'] 
 }));
 
-app.use(express.json()); // Para poder leer JSON en el body
+app.use(express.json()); 
 
 // 3. Conexión a la Base de Datos
 conectarDB();
@@ -33,6 +34,8 @@ app.use('/api/products', productRoutes);
 app.use('/api/cart', cartRoutes);
 app.use('/api/orders', orderRoutes);
 app.use('/api/category', categoryRoutes);
+app.use('/api/services', serviceRoutes); // <--- NUEVA RUTA REGISTRADA
+
 
 // Ruta de bienvenida/test
 app.get('/', (req, res) => {
@@ -44,7 +47,7 @@ app.listen(PORT, () => {
     console.log(`✅ Servidor corriendo en http://localhost:${PORT}`);
 });
 
-// 6. Si no arranca el servidor
+// 6. Manejo de errores global
 app.use((err, req, res, next) => {
     console.error(err.stack);
     res.status(500).json({ message: 'Algo salió mal en el servidor' });

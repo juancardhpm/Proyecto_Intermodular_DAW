@@ -22,6 +22,10 @@ const ServiceRequest =  sequelize.define('solicitud_servicio', {
         type: DataTypes.TEXT,
         allowNull: false
     },
+    respuesta_admin: {
+        type: DataTypes.TEXT,
+        allowNull: true // Se queda en NULL hasta que el admin responda
+    },
     estado: {
         type: DataTypes.ENUM('abierto', 'respondido', 'cerrado'),
         defaultValue: 'abierto'

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 03-03-2026 a las 00:52:18
+-- Tiempo de generación: 31-03-2026 a las 03:21:13
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -34,6 +34,14 @@ CREATE TABLE `carrito` (
   `estado` enum('activo','inactivo') DEFAULT 'activo'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Volcado de datos para la tabla `carrito`
+--
+
+INSERT INTO `carrito` (`id`, `usuario_id`, `fecha_creacion`, `estado`) VALUES
+(1, 1, '2026-03-30 20:06:58', 'activo'),
+(2, 3, '2026-03-30 20:23:00', 'activo');
+
 -- --------------------------------------------------------
 
 --
@@ -45,6 +53,14 @@ CREATE TABLE `categorias` (
   `nombre` varchar(100) NOT NULL,
   `descripcion` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `categorias`
+--
+
+INSERT INTO `categorias` (`id`, `nombre`, `descripcion`) VALUES
+(1, 'Tarjetas Graficas', NULL),
+(2, 'Prueba', NULL);
 
 -- --------------------------------------------------------
 
@@ -59,6 +75,13 @@ CREATE TABLE `detalles_carrito` (
   `cantidad` int(11) NOT NULL DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Volcado de datos para la tabla `detalles_carrito`
+--
+
+INSERT INTO `detalles_carrito` (`id`, `carrito_id`, `producto_id`, `cantidad`) VALUES
+(7, 2, 2, 1);
+
 -- --------------------------------------------------------
 
 --
@@ -72,6 +95,20 @@ CREATE TABLE `detalles_pedido` (
   `cantidad` int(11) NOT NULL,
   `precio_unitario` decimal(10,2) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `detalles_pedido`
+--
+
+INSERT INTO `detalles_pedido` (`id`, `pedido_id`, `producto_id`, `cantidad`, `precio_unitario`) VALUES
+(6, 6, 2, 4, 2000.00),
+(7, 7, 2, 4, 2000.00),
+(8, 8, 2, 1, 2000.00),
+(9, 8, 1, 1, 20.00),
+(10, 9, 2, 1, 2000.00),
+(11, 10, 1, 1, 20.00),
+(12, 11, 1, 1, 20.00),
+(13, 11, 2, 1, 2000.00);
 
 -- --------------------------------------------------------
 
@@ -88,6 +125,18 @@ CREATE TABLE `pagos` (
   `estado_pago` enum('Pendiente','Completado','Fallido') DEFAULT 'Pendiente'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Volcado de datos para la tabla `pagos`
+--
+
+INSERT INTO `pagos` (`id`, `pedido_id`, `fecha_pago`, `cantidad_total`, `metodo_pago`, `estado_pago`) VALUES
+(1, 6, '2026-03-30 23:38:07', 8000.00, 'Transferencia', 'Completado'),
+(2, 7, '2026-03-30 23:38:47', 8000.00, 'PayPal', 'Completado'),
+(3, 8, '2026-03-30 23:39:34', 2020.00, 'Tarjeta', 'Completado'),
+(4, 9, '2026-03-30 23:48:02', 2000.00, 'Tarjeta', 'Completado'),
+(5, 10, '2026-03-30 23:48:40', 20.00, 'PayPal', 'Completado'),
+(6, 11, '2026-03-30 23:50:26', 2020.00, 'Transferencia', 'Completado');
+
 -- --------------------------------------------------------
 
 --
@@ -102,6 +151,18 @@ CREATE TABLE `pedidos` (
   `total` decimal(10,2) NOT NULL,
   `estado` enum('Pendiente','Enviado','Entregado') DEFAULT 'Pendiente'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `pedidos`
+--
+
+INSERT INTO `pedidos` (`id`, `usuario_id`, `fecha_pedido`, `direccion_envio`, `total`, `estado`) VALUES
+(6, 1, '2026-03-30 23:38:07', 'Calle Prueba, 4', 8000.00, 'Pendiente'),
+(7, 1, '2026-03-30 23:38:47', 'Prueba', 8000.00, 'Pendiente'),
+(8, 1, '2026-03-30 23:39:34', 'cccc', 2020.00, 'Pendiente'),
+(9, 1, '2026-03-30 23:48:02', 'ffff', 2000.00, 'Pendiente'),
+(10, 1, '2026-03-30 23:48:40', 'vvvv', 20.00, 'Pendiente'),
+(11, 1, '2026-03-30 23:50:26', 'fff', 2020.00, 'Pendiente');
 
 -- --------------------------------------------------------
 
@@ -120,6 +181,15 @@ CREATE TABLE `productos` (
   `imagen_url` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Volcado de datos para la tabla `productos`
+--
+
+INSERT INTO `productos` (`id`, `categoria_id`, `nombre`, `descripcion`, `precio`, `stock`, `activo`, `imagen_url`) VALUES
+(1, 2, 'Producto Prueba2', 'Prodcuto de prueba', 20.00, 99, 'si', ''),
+(2, 1, 'RTX4090 Prueba', 'RTX4090 Prueba', 2000.00, 99, 'si', 'https://thumb.pccomponentes.com/w-530-530/articles/1066/10661819/1314-msi-geforce-rtx-4090-suprim-24gb-gddr6x.jpg'),
+(3, 1, 'Prueba de titulo de producto', 'Esto es la descripcion de la prueba de un producto', 100.00, 100, 'si', '');
+
 -- --------------------------------------------------------
 
 --
@@ -132,8 +202,16 @@ CREATE TABLE `solicitud_servicio` (
   `asunto` varchar(200) NOT NULL,
   `mensaje` text NOT NULL,
   `estado` enum('abierto','respondido','cerrado') DEFAULT 'abierto',
-  `fecha_creacion` timestamp NOT NULL DEFAULT current_timestamp()
+  `fecha_creacion` timestamp NOT NULL DEFAULT current_timestamp(),
+  `respuesta_admin` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `solicitud_servicio`
+--
+
+INSERT INTO `solicitud_servicio` (`id`, `usuario_id`, `asunto`, `mensaje`, `estado`, `fecha_creacion`, `respuesta_admin`) VALUES
+(1, 1, 'Error de prueba', 'Esto es una prueba de asistencia', 'respondido', '2026-03-31 00:05:15', '');
 
 -- --------------------------------------------------------
 
@@ -147,11 +225,20 @@ CREATE TABLE `usuarios` (
   `apellidos` varchar(150) NOT NULL,
   `email` varchar(150) NOT NULL,
   `password` varchar(255) NOT NULL,
-  `direccion` varchar(255) NOT NULL,
-  `telefono` varchar(20) NOT NULL,
+  `direccion` varchar(255) DEFAULT NULL,
+  `telefono` varchar(20) DEFAULT NULL,
   `rol` enum('cliente','admin') DEFAULT 'cliente',
   `fecha_registro` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `usuarios`
+--
+
+INSERT INTO `usuarios` (`id`, `nombre`, `apellidos`, `email`, `password`, `direccion`, `telefono`, `rol`, `fecha_registro`) VALUES
+(1, 'Prueba', 'Prueba', 'prueba@prueba.com', '$2b$10$Lz8GraOifLfNaMDP6Y2mm.k.4t6n6ajThHPlM2iihICmMrr0KAjUO', 'Calle Prueba', '66666666', 'cliente', '2026-03-25 02:45:27'),
+(2, 'pruebas', 'admin', 'admin@admin.com', '$2b$10$lmZ5HfL5OzK8ntaLEdNnfuTaUg6gVphbZtOVqLEyL49ei.SyQuosq', 'Calle Pruebas Admin', '555555555', 'admin', '2026-03-27 23:04:55'),
+(3, 'prueba2', 'prueba2', 'prueba2@prueba.com', '$2b$10$4aYh6AM4xhUyVM2T3KS9VO2Vg9hfyaMxcXwOBHYkWgkvKUvfogxsO', 'Calle Prueba2', '666666666', 'cliente', '2026-03-30 20:22:43');
 
 --
 -- Índices para tablas volcadas
@@ -229,55 +316,55 @@ ALTER TABLE `usuarios`
 -- AUTO_INCREMENT de la tabla `carrito`
 --
 ALTER TABLE `carrito`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT de la tabla `categorias`
 --
 ALTER TABLE `categorias`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT de la tabla `detalles_carrito`
 --
 ALTER TABLE `detalles_carrito`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT de la tabla `detalles_pedido`
 --
 ALTER TABLE `detalles_pedido`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT de la tabla `pagos`
 --
 ALTER TABLE `pagos`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT de la tabla `pedidos`
 --
 ALTER TABLE `pedidos`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT de la tabla `productos`
 --
 ALTER TABLE `productos`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT de la tabla `solicitud_servicio`
 --
 ALTER TABLE `solicitud_servicio`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT de la tabla `usuarios`
 --
 ALTER TABLE `usuarios`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- Restricciones para tablas volcadas

@@ -1,39 +1,53 @@
 const { Order, OrderDetail, Product, Payment, sequelize } = require('../models');
 
-// 1. Procesar el Checkout (Crear pedido)
 exports.createOrder = async (req, res) => {
     const t = await sequelize.transaction();
 
     try {
-        const { usuario_id, direccion_envio, metodo_pago, productos } = req.body;
+        const { usuario_id, direccion_envio, metodo_pago, items, total, detalles_pago } = req.body;
 
-        let totalPedido = 0;
-        for (const item of productos) {
-            const prod = await Product.findByPk(item.producto_id);
-            if (!prod || prod.stock < item.cantidad) {
-                throw new Error(`Stock insuficiente para el producto: ${prod ? prod.nombre : 'ID ' + item.producto_id}`);
-            }
-            totalPedido += item.cantidad * prod.precio;
+        if (!items || items.length === 0) {
+            return res.status(400).json({ message: "El carrito está vacío." });
         }
 
+        // --- VALIDACIÓN DE DATOS DE PAGO SEGÚN MÉTODO ---
+        if (metodo_pago === 'Tarjeta') {
+            if (!detalles_pago.numeroTarjeta || !detalles_pago.cvv) {
+                throw new Error("Datos de tarjeta incompletos.");
+            }
+        } else if (metodo_pago === 'PayPal') {
+            if (!detalles_pago.correoPaypal || !detalles_pago.passPaypal) {
+                throw new Error("Credenciales de PayPal incompletas.");
+            }
+        } else if (metodo_pago === 'Transferencia') {
+            if (!detalles_pago.numeroCuenta) {
+                throw new Error("Número de cuenta IBAN requerido.");
+            }
+        }
+
+        // A. Crear el Pedido
         const nuevoPedido = await Order.create({
             usuario_id,
             direccion_envio,
-            total: totalPedido,
+            total: total,
             estado: 'Pendiente'
         }, { transaction: t });
 
-        for (const item of productos) {
+        // B. Stock y Detalles
+        for (const item of items) {
             const prod = await Product.findByPk(item.producto_id);
+
+            if (!prod || prod.stock < item.cantidad) {
+                throw new Error(`Stock insuficiente para: ${prod ? prod.nombre : 'ID ' + item.producto_id}`);
+            }
 
             await OrderDetail.create({
                 pedido_id: nuevoPedido.id,
                 producto_id: item.producto_id,
                 cantidad: item.cantidad,
-                precio_unitario: prod.precio
+                precio_unitario: item.precio_unitario
             }, { transaction: t });
 
-            // CORREGIDO: 'stock' con K
             await Product.decrement('stock', {
                 by: item.cantidad,
                 where: { id: item.producto_id },
@@ -41,8 +55,10 @@ exports.createOrder = async (req, res) => {
             });
         }
 
+        // C. Registrar el Pago
         await Payment.create({
             pedido_id: nuevoPedido.id,
+            cantidad_total: total,
             metodo_pago: metodo_pago,
             estado_pago: 'Completado'
         }, { transaction: t });
@@ -50,15 +66,16 @@ exports.createOrder = async (req, res) => {
         await t.commit();
 
         res.status(201).json({
-            message: "¡Pedido y pago realizado con éxito!",
+            message: "¡Pedido verificado y realizado con éxito!",
             pedido_id: nuevoPedido.id
         });
 
     } catch (error) {
-        await t.rollback();
-        res.status(500).json({
+        if (t) await t.rollback();
+        console.error("Error en createOrder:", error);
+        res.status(400).json({
             message: "Error al procesar la compra.",
-            error: error.message // CORREGIDO: error.message
+            error: error.message
         });
     }
 };
@@ -67,9 +84,22 @@ exports.createOrder = async (req, res) => {
 exports.getUserOrders = async (req, res) => {
     try {
         const { usuario_id } = req.params;
-        const orders = await Order.findAll({ where: { usuario_id } });
+        
+        const orders = await Order.findAll({ 
+            where: { usuario_id },
+            // Incluir detalles y el producto para tener el nombre y la imagen
+            include: [
+                {
+                    model: OrderDetail,
+                    include: [{ model: Product }] // Esto trae los datos de la tabla 'productos'
+                }
+            ],
+            order: [['fecha_pedido', 'DESC']] // Los más recientes primero
+        });
+        
         res.status(200).json(orders);
     } catch (error) {
+        console.error("Error al obtener pedidos:", error);
         res.status(500).json({ message: "Error al obtener pedidos", error: error.message });
     }
 };
@@ -77,7 +107,7 @@ exports.getUserOrders = async (req, res) => {
 // 3. Obtener pedido por ID
 exports.getOrderById = async (req, res) => {
     try {
-        const pedido = await Order.findByPk(req.params.id, { include: [{ model: OrderDetail }] });
+        const pedido = await Order.findByPk(req.params.id, { include: [OrderDetail] });
         if (!pedido) return res.status(404).json({ message: "Pedido no encontrado" });
         res.status(200).json(pedido);
     } catch (error) {
@@ -88,10 +118,13 @@ exports.getOrderById = async (req, res) => {
 // 4. Listar todos los pedidos (Admin)
 exports.getAllOrders = async (req, res) => {
     try {
-        const orders = await Order.findAll();
-        res.status(200).json(orders);
+        const pedidos = await Order.findAll({
+            // Usamos la columna real de tu BBDD para ordenar
+            order: [['fecha_pedido', 'DESC']] 
+        });
+        res.status(200).json(pedidos);
     } catch (error) {
-        res.status(500).json({ message: "Error", error: error.message });
+        res.status(500).json({ message: "Error al obtener pedidos", error: error.message });
     }
 };
 

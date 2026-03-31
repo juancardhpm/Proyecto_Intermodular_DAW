@@ -1,93 +1,132 @@
-// Creamos los controladores para gestionar las acciones del carrito como añadir, actualizar y eliminar productos.
-
 const Cart = require('../models/Cart');
-const CartDetails = require('../models/CartDetails')
+const CartDetails = require('../models/CartDetails');
+const Product = require('../models/Product');
 
-
-// Obtener los productos del carrito
-exports.getCartItems = async (req, res) => {
-  try {
-    const { user_id } = req.query; // O req.params según cómo lo hayas diseñado
-    const cart = await Cart.findOne({ where: { user_id, status: 'active' } });
-    
-    if (!cart) {
-      return res.status(404).json({ message: 'Carrito no encontrado' });
-    }
-
-    const items = await CartDetails.findAll({ where: { cart_id: cart.id } });
-    res.status(200).json(items);
-  } catch (error) {
-    res.status(500).json({ message: 'Error al obtener los productos del carrito', error: error.message });
-  }
-};
-
-
-// Añadir producto al carrito
+// Añadir al carrito con validación de stock
 exports.addToCart = async (req, res) => {
-  // Recibimos el ID del usuario, el ID del producto y la cantidad
   const { user_id, product_id, quantity } = req.body;
 
   try {
-    // Buscamos o creamos un carrito activo para el usuario
-    const cart = await Cart.findOrCreate({ where: { user_id, status: 'active' } });
+    // 1. Verificar stock actual del producto
+    const product = await Product.findByPk(product_id);
+    if (!product) return res.status(404).json({ message: 'Producto no encontrado' });
 
-    // Añadimos el producto al carrito en la tabla de 'CartDetails'
-    const cartDetails = await CartDetails.create({
-      cart_id: cart.id,
-      product_id,
-      quantity,
+    // 2. Buscar o crear el carrito activo
+    const [cart] = await Cart.findOrCreate({ 
+      where: { usuario_id: user_id, estado: 'activo' } 
     });
 
-    // Devolvemos el detalle del carrito
-    res.status(201).json(cartDetails);
+    // 3. Verificar si el producto ya está en el carrito para sumar cantidades
+    const existingItem = await CartDetails.findOne({
+      where: { carrito_id: cart.id, producto_id: product_id }
+    });
+
+    const cantidadNueva = existingItem 
+      ? existingItem.cantidad + parseInt(quantity) 
+      : parseInt(quantity);
+
+    // --- MEJORA: VALIDACIÓN DE STOCK ---
+    if (cantidadNueva > product.stock) {
+      return res.status(400).json({ 
+        message: `Stock insuficiente. Solo quedan ${product.stock} unidades en total.` 
+      });
+    }
+
+    if (existingItem) {
+      existingItem.cantidad = cantidadNueva;
+      await existingItem.save();
+      return res.status(200).json(existingItem);
+    }
+
+    // 4. Crear nuevo detalle
+    const newItem = await CartDetails.create({
+      carrito_id: cart.id,
+      producto_id: product_id,
+      cantidad: quantity
+    });
+
+    res.status(201).json(newItem);
   } catch (error) {
-    // Si ocurre un error, devolvemos un mensaje de error
-    res.status(500).json({ message: 'Error al añadir producto al carrito' });
+    console.error("Error en addToCart:", error);
+    res.status(500).json({ message: 'Error en el servidor', error: error.message });
   }
 };
 
-
-// Actualizar cantidad de producto en el carrito
-exports.updateCart = async (req, res) => {
-  const { cart_id, product_id, quantity } = req.body;
-
+exports.getCartItems = async (req, res) => {
   try {
-    // Buscamos el producto dentro del carrito
-    const cartDetails = await CartDetails.findOne({
-      where: { cart_id, product_id },
+    const { user_id } = req.query;
+    
+    const cart = await Cart.findOne({ 
+      where: { usuario_id: user_id, estado: 'activo' } 
+    });
+    
+    if (!cart) return res.status(200).json([]);
+
+    const items = await CartDetails.findAll({ 
+        where: { carrito_id: cart.id },
+        include: [{ model: Product }] 
     });
 
-    // Si no encontramos el producto, devolvemos un error
-    if (!cartDetails) {
+    res.status(200).json(items);
+  } catch (error) {
+    console.error("Error al obtener carrito:", error);
+    res.status(500).json({ message: 'Error al obtener carrito', error: error.message });
+  }
+};
+
+// --- MEJORA: ACTUALIZAR CON VALIDACIÓN DE STOCK ---
+exports.updateCart = async (req, res) => {
+  const { carrito_id, producto_id, cantidad } = req.body; 
+
+  try {
+    // Buscamos el producto para comparar la nueva cantidad con su stock real
+    const product = await Product.findByPk(producto_id);
+    if (!product) return res.status(404).json({ message: 'Producto no encontrado' });
+
+    if (cantidad > product.stock) {
+      return res.status(400).json({ 
+        message: `No puedes añadir más. Stock disponible: ${product.stock}` 
+      });
+    }
+
+    const cartItem = await CartDetails.findOne({
+      where: { carrito_id, producto_id },
+    });
+
+    if (!cartItem) {
       return res.status(404).json({ message: 'Producto no encontrado en el carrito' });
     }
 
-    // Actualizamos la cantidad del producto
-    cartDetails.quantity = quantity;
-    await cartDetails.save();  // Guardamos el cambio
+    cartItem.cantidad = cantidad; 
+    await cartItem.save();
 
-    // Devolvemos los detalles actualizados del carrito
-    res.status(200).json(cartDetails);
+    res.status(200).json(cartItem);
   } catch (error) {
+    console.error("Error al actualizar:", error);
     res.status(500).json({ message: 'Error al actualizar el carrito' });
   }
 };
 
-
-// Eliminar producto del carrito
 exports.removeFromCart = async (req, res) => {
-  const { cart_id, product_id } = req.body;
+  console.log("Body recibido en DELETE:", req.body);
+  const { carrito_id, producto_id } = req.body;
 
   try {
-    // Eliminamos el producto de la tabla CartDetails
-    await CartDetails.destroy({
-      where: { cart_id, product_id },
+    if (!carrito_id || !producto_id) {
+      return res.status(400).json({ message: 'Faltan IDs para eliminar' });
+    }
+
+    const deleted = await CartDetails.destroy({
+      where: { carrito_id, producto_id },
     });
 
-    // Devolvemos un mensaje de éxito
-    res.status(200).json({ message: 'Producto eliminado del carrito' });
-  } catch (error) {
-    res.status(500).json({ message: 'Error al eliminar producto del carrito' });
-  }
-}; 
+    if (deleted === 0) {
+        return res.status(404).json({ message: 'No se encontró el registro' });
+    }
 
+    res.status(200).json({ message: 'Producto eliminado' });
+  } catch (error) {
+    console.error("Error al eliminar:", error);
+    res.status(500).json({ message: 'Error interno' });
+  }
+};

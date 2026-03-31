@@ -1,32 +1,58 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';  // Importamos React Router
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
-// Importamos los componentes de las páginas
-import Navbar from './components/Navbar'; //Navbar
-import HomePage from './pages/HomePage';  // Página principal (catálogo de productos)
-import Cart from './components/Cart';  // Página del carrito
-import Checkout from './components/Checkout';  // Página de checkout (pago)
-import Login from './pages/Login'; //Pagina de login
-import Register from './pages/Register'; //Pagina de registro
+import Navbar from './components/Navbar';
+import HomePage from './pages/HomePage';
+import Cart from './components/Cart';
+import Checkout from './components/Checkout';
+import Login from './pages/Login';
+import Register from './pages/Register';
+import Catalog from './components/Catalog';
+import ServiceForm from './components/ServiceForm';
+import AdminDashboard from './components/AdminDashboard'; 
 import AdminProducts from './components/AdminProducts';
+import AdminCategories from './components/AdminCategories';
 import ProtectedRoute from './components/ProtectedRoute';
-import AdminCategories  from './components/AdminCategories';
+import UserOrders from './pages/UserOrders'; 
 
 const App = () => {
   return (
-    <Router>  {/* Envolvemos la aplicación con Router para habilitar la navegación */}
-      <Navbar />  {/* Este componente siempre será visible en todas las páginas */}
+    <Router>
+      <Navbar />
       
-      <Routes>  {/* Definimos las rutas de la aplicación */}
-        <Route path="/" element={<HomePage />} />  {/* Página principal: muestra productos */}
-        <Route path="/cart" element={<Cart />} />  {/* Página del carrito */}
-        <Route path="/checkout" element={<Checkout />} />  {/* Página de checkout */}
-        <Route path="/login" element={<Login />} />   {/* Pagina de Login */}
-        <Route path='/register' element={<Register />} />  {/* Pagina de registro */}
-        <Route path="/admin/categorias" element={<AdminCategories />} /> {/* 2. Crea la ruta */}
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/cart" element={<Cart />} />
+        <Route path='/catalog' element={<Catalog />} />
+        <Route path="/checkout" element={<Checkout />} />
+        <Route path="/login" element={<Login />} />
+        <Route path='/register' element={<Register />} />
+        <Route path='/serviceform' element={<ServiceForm />} />
+        <Route path="/mis-pedidos" element={<UserOrders />} />
+
+        {/* Rutas del Administrador - Ajustadas para coincidir con Navbar */}
         <Route path='/admin' element={
           <ProtectedRoute>
             <AdminProducts />
+          </ProtectedRoute>
+        } />
+        
+        <Route path='/admin/categorias' element={
+          <ProtectedRoute>
+            <AdminCategories />
+          </ProtectedRoute>
+        } />
+
+        {/* Ambas rutas usan el Dashboard, el cual filtrará por pestañas */}
+        <Route path='/admin/pedidos' element={
+          <ProtectedRoute>
+            <AdminDashboard />
+          </ProtectedRoute>
+        } />
+
+        <Route path='/admin/servicios' element={
+          <ProtectedRoute>
+            <AdminDashboard />
           </ProtectedRoute>
         } />
       </Routes>

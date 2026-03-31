@@ -2,17 +2,42 @@ const { Product, Category } = require('../models');
 
 
 // Metodos para obtener todos los product
+const { Op } = require('sequelize'); // Importante: añade esto arriba con los otros require
+
 exports.getAllProducts = async (req, res) => {
     try {
+        const { nombre, minPrecio, maxPrecio, categoria } = req.query;
+
+        // Construimos el objeto de filtros dinámicamente
+        let filtros = { activo: 'si' };
+
+        // Filtro por nombre (Busca coincidencias parciales)
+        if (nombre) {
+            filtros.nombre = { [Op.like]: `%${nombre}%` };
+        }
+
+        // Filtro por rango de precio
+        if (minPrecio || maxPrecio) {
+            filtros.precio = {
+                [Op.between]: [minPrecio || 0, maxPrecio || 999999]
+            };
+        }
+
+        // Filtro por categoría (id)
+        if (categoria) {
+            filtros.categoria_id = categoria;
+        }
+
         const products = await Product.findAll({
-            where: { activo: 'si' },
-            include: [{ model: Category, attributes: ['nombre'] }] //Aqui configuro para que salgan los product existentes
+            where: filtros,
+            include: [{ model: Category, attributes: ['nombre'] }]
         });
+
         res.status(200).json(products);
-    } catch(error){
-        res.status(500).json({ message: "Error al obtener product", error: error.message });
-    };
-}
+    } catch (error) {
+        res.status(500).json({ message: "Error al obtener productos", error: error.message });
+    }
+};
 
 // Metodo para obtener un producto por ID 
 exports.getProductById = async (req, res) => {

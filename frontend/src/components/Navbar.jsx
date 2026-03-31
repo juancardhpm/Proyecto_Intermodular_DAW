@@ -1,18 +1,11 @@
-
-//Creamos el componente de navegación que se mostrará en todas las páginas de la aplicación. 
-// Este componente incluirá enlaces a las diferentes secciones del sitio, como el catálogo de productos, el carrito de compras y la página de inicio.
-
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 
 const Navbar = () => {
   const navigate = useNavigate();
-  const location = useLocation(); // Escucha cambios en la URL para refrescar el componente
-  
-  // Usamos un estado para que React "sepa" que debe repintar cuando el user cambia
+  const location = useLocation();
   const [user, setUser] = useState(null);
 
-  // Cada vez que la ubicación (URL) cambie, actualizamos el estado del user
   useEffect(() => {
     try {
       const userString = localStorage.getItem('user');
@@ -21,44 +14,46 @@ const Navbar = () => {
       console.error('Error parseando user:', error);
       setUser(null);
     }
-  }, [location]); // <--- Esta es la clave: se ejecuta al navegar
+  }, [location]);
 
-  // Funcion para cerrar la sesion del user
   const handleLogout = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('user');
-    setUser(null); // Limpiamos el estado inmediatamente
-    alert('Has cerrado sesion correctamente');
+    setUser(null);
+    alert('Has cerrado sesión correctamente');
     navigate('/login'); 
   };
 
   return (
     <nav>
-      <ul>
-        {/* Enlaces fijos que siempre se ven */}
+      <ul style={styles.ul}>
         <li><Link to="/">Home</Link></li>
         <li><Link to="/catalog">Catálogo</Link></li>
+        <li><Link to="/serviceform">Asistencia Técnica</Link></li>
 
-        {/* Si el user es ADMIN, mostramos el Panel de Gestion */}
+        {/* Panel de Admin */}
         {user && user.rol === 'admin' && (
           <>
             <li>
-              <Link to="/admin" style={{ color: '#ff4d4d', fontWeight: 'bold' }}>
-                Gestión Productos
-              </Link>
+              <Link to="/admin" style={styles.adminLink}>Gestión Productos</Link>
             </li>
             <li>
-              <Link to="/admin/categorias" style={{ color: '#ff4d4d', fontWeight: 'bold' }}>
-                Gestión Categorías
-              </Link>
+              <Link to="/admin/categorias" style={styles.adminLink}>Categorías</Link>
             </li>
+            <li>
+              <Link to="/admin/pedidos" style={styles.adminLink}>Pedidos/Soporte</Link>
+            </li> 
           </>
         )}
 
-        {/* Solo muestro el carrito si hay alguien logueado */}
-        {user && <li><Link to="/cart">Carrito</Link></li>}
+        {/* El carrito siempre visible */}
+        <li><Link to="/cart">Carrito</Link></li>
 
-        {/* Logica de Login / Registro */}
+        {/* ENLACE A MIS PEDIDOS: Solo visible si el usuario está logueado */}
+        {user && (
+          <li><Link to="/mis-pedidos">Mis Pedidos</Link></li>
+        )}
+
         {!user ? (
           <>
             <li><Link to="/login">Login</Link></li>
@@ -66,12 +61,12 @@ const Navbar = () => {
           </>
         ) : (
           <>
-            <li style={{ marginLeft: '20px', color: 'gray' }}>
-              Hola, <strong>{user.nombre}</strong> ({user.rol})
+            <li style={{ marginLeft: '20px', color: '#a855f7' }}>
+              Hola, <strong>{user.nombre}</strong>
             </li>
             <li>
-              <button onClick={handleLogout} style={{ cursor: 'pointer', marginLeft: '10px' }}>
-                Cerrar Sesion
+              <button onClick={handleLogout} style={styles.logoutBtn}>
+                Cerrar Sesión
               </button>
             </li>
           </>
@@ -79,6 +74,12 @@ const Navbar = () => {
       </ul>
     </nav>
   );
+};
+
+const styles = {
+  ul: { display: 'flex', alignItems: 'center', gap: '15px', listStyle: 'none', padding: '15px', backgroundColor: '#111' },
+  adminLink: { color: '#ff4d4d', fontWeight: 'bold', textDecoration: 'none' },
+  logoutBtn: { cursor: 'pointer', marginLeft: '10px', backgroundColor: '#333', color: '#fff', border: 'none', padding: '5px 10px', borderRadius: '4px' }
 };
 
 export default Navbar;

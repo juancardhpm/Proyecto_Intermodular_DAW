@@ -5,8 +5,9 @@ const AdminDashboard = () => {
     const [tab, setTab] = useState('pedidos');
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [selectedItem, setSelectedItem] = useState(null); // Para controlar el Modal
+    const [selectedItem, setSelectedItem] = useState(null); 
     const [textoRespuesta, setTextoRespuesta] = useState('');
+    const [mensaje, setMensaje] = useState('');
 
     useEffect(() => {
         fetchData();
@@ -45,7 +46,9 @@ const AdminDashboard = () => {
             setTextoRespuesta(''); 
             fetchData(); 
         } catch (err) {
+            console.error("Error al procesar la respuesta:", err);
             alert("Error al procesar la respuesta");
+            setMensaje(err.message); 
         }
     };
 
@@ -127,7 +130,6 @@ const AdminDashboard = () => {
                                     <p style={{marginTop: '5px', fontStyle: 'italic'}}>{selectedItem.mensaje}</p>
                                 </div>
 
-                                {/* --- NUEVO: Mostrar respuesta previa si existe --- */}
                                 {selectedItem.respuesta_admin && (
                                     <div style={{...styles.msgBox, borderLeftColor: '#3b82f6', backgroundColor: '#0b0b0d'}}>
                                         <strong style={{color: '#3b82f6'}}>Respuesta Guardada:</strong>
@@ -173,7 +175,6 @@ const AdminDashboard = () => {
     );
 };
 
-// ... (tus estilos se mantienen iguales)
 const styles = {
     container: { padding: '40px', backgroundColor: '#0b0b0d', minHeight: '100vh', color: '#fff', fontFamily: 'sans-serif' },
     title: { textAlign: 'center', marginBottom: '30px' },

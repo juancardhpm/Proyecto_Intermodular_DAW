@@ -5,12 +5,9 @@ import { useNavigate } from 'react-router-dom';
 const ServiceForm = () => {
     const navigate = useNavigate();
     
-    // Obtenemos datos de localStorage de forma segura
-    const [token] = useState(localStorage.getItem('token'));
-    const [user] = useState(() => {
-        const savedUser = localStorage.getItem('user');
-        return savedUser ? JSON.parse(savedUser) : null;
-    });
+    // Simplificamos la carga inicial
+    const token = localStorage.getItem('token');
+    const user = JSON.parse(localStorage.getItem('user') || 'null');
 
     const [asunto, setAsunto] = useState('');
     const [mensaje, setMensaje] = useState('');
@@ -19,7 +16,10 @@ const ServiceForm = () => {
     const [selectedRequest, setSelectedRequest] = useState(null);
 
     useEffect(() => {
-        if (token && user) {
+        // Si no hay token o user, redirigimos tras el primer render
+        if (!token || !user) {
+            // Opcional: podrías poner un timeout o dejar que el render de "Acceso Denegado" actúe
+        } else {
             fetchHistorial();
         }
     }, [token, user]);
@@ -45,15 +45,19 @@ const ServiceForm = () => {
                 usuario_id: user.id,
                 asunto,
                 mensaje
-            }, { headers: { Authorization: `Bearer ${token}` } });
+            }, { 
+                headers: { Authorization: `Bearer ${token}` } 
+            });
 
             alert("✅ Solicitud enviada correctamente.");
             setAsunto('');
             setMensaje('');
-            fetchHistorial();
+            fetchHistorial(); // Refrescar la lista automáticamente
         } catch (error) {
+            console.error("Error al enviar:", error);
             alert("❌ Error al enviar la solicitud.");
-            setMensaje(error);
+            // CORRECCIÓN: No pases el objeto 'error' directamente a un estado que se renderiza
+            // setMensaje(error.message); 
         } finally {
             setEnviando(false);
         }
@@ -65,7 +69,7 @@ const ServiceForm = () => {
             <div style={styles.container}>
                 <div style={styles.formSection}>
                     <h2 style={styles.title}>ACCESO DENEGADO</h2>
-                    <p style={{textAlign: 'center'}}>Debes iniciar sesión para solicitar asistencia.</p>
+                    <p style={{textAlign: 'center', marginBottom: '20px'}}>Debes iniciar sesión para solicitar asistencia.</p>
                     <button onClick={() => navigate('/login')} style={styles.btn}>IR AL LOGIN</button>
                 </div>
             </div>
@@ -113,10 +117,10 @@ const ServiceForm = () => {
                         <table style={styles.table}>
                             <thead>
                                 <tr style={styles.headerTr}>
-                                    <th>Asunto</th>
-                                    <th>Estado</th>
-                                    <th>Fecha</th>
-                                    <th>Acción</th>
+                                    <th style={styles.th}>Asunto</th>
+                                    <th style={styles.th}>Estado</th>
+                                    <th style={styles.th}>Fecha</th>
+                                    <th style={styles.th}>Acción</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -126,7 +130,9 @@ const ServiceForm = () => {
                                         <td style={styles.td}>
                                             <span style={{
                                                 ...styles.badge,
-                                                backgroundColor: item.estado === 'abierto' ? '#3b82f6' : item.estado === 'respondido' ? '#10b981' : '#ef4444'
+                                                backgroundColor: 
+                                                    item.estado === 'abierto' ? '#3b82f6' : 
+                                                    item.estado === 'respondido' ? '#10b981' : '#ef4444'
                                             }}>
                                                 {item.estado.toUpperCase()}
                                             </span>
@@ -150,16 +156,17 @@ const ServiceForm = () => {
 
             {/* MODAL PARA RESPUESTA */}
             {selectedRequest && (
-                <div style={styles.modalOverlay}>
-                    <div style={styles.modalContent}>
+                <div style={styles.modalOverlay} onClick={() => setSelectedRequest(null)}>
+                    {/* onClick en el overlay para cerrar al hacer clic fuera */}
+                    <div style={styles.modalContent} onClick={e => e.stopPropagation()}>
                         <h3 style={{color: '#a855f7', marginTop: 0}}>DETALLE DEL TICKET #{selectedRequest.id}</h3>
                         <div style={styles.msgBoxCliente}>
                             <strong style={{color: '#a855f7'}}>Tu mensaje:</strong>
-                            <p style={{marginTop: '5px', fontSize: '0.9rem'}}>{selectedRequest.mensaje}</p>
+                            <p style={{marginTop: '5px', fontSize: '0.9rem', color: '#eee'}}>{selectedRequest.mensaje}</p>
                         </div>
                         <div style={{...styles.msgBoxCliente, borderLeftColor: '#10b981', backgroundColor: '#050505'}}>
                             <strong style={{color: '#10b981'}}>Respuesta del Soporte:</strong>
-                            <p style={{marginTop: '5px', fontSize: '0.9rem'}}>{selectedRequest.respuesta_admin}</p>
+                            <p style={{marginTop: '5px', fontSize: '0.9rem', color: '#eee'}}>{selectedRequest.respuesta_admin}</p>
                         </div>
                         <button style={styles.btnCerrar} onClick={() => setSelectedRequest(null)}>CERRAR VENTANA</button>
                     </div>
@@ -186,9 +193,10 @@ const styles = {
     tableWrapper: { backgroundColor: '#1a1a21', borderRadius: '8px', overflow: 'hidden', border: '1px solid #333' },
     table: { width: '100%', borderCollapse: 'collapse', textAlign: 'left' },
     headerTr: { backgroundColor: '#25252e', color: '#a855f7' },
+    th: { padding: '15px', fontSize: '0.95rem', fontWeight: 'bold' }, // Añadido th
     tr: { borderBottom: '1px solid #25252e' },
     td: { padding: '15px', fontSize: '0.9rem' },
-    badge: { padding: '4px 8px', borderRadius: '4px', fontSize: '0.7rem', fontWeight: 'bold' },
+    badge: { padding: '4px 8px', borderRadius: '4px', fontSize: '0.7rem', fontWeight: 'bold', color: '#fff' },
     emptyMsg: { textAlign: 'center', color: '#666', marginTop: '20px' },
 
     btnLeer: { backgroundColor: '#10b981', color: 'white', border: 'none', padding: '6px 12px', borderRadius: '4px', cursor: 'pointer', fontSize: '0.8rem' },

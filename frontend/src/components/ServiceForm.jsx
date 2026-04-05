@@ -56,8 +56,6 @@ const ServiceForm = () => {
         } catch (error) {
             console.error("Error al enviar:", error);
             alert("❌ Error al enviar la solicitud.");
-            // CORRECCIÓN: No pases el objeto 'error' directamente a un estado que se renderiza
-            // setMensaje(error.message); 
         } finally {
             setEnviando(false);
         }
@@ -69,7 +67,7 @@ const ServiceForm = () => {
             <div style={styles.container}>
                 <div style={styles.formSection}>
                     <h2 style={styles.title}>ACCESO DENEGADO</h2>
-                    <p style={{textAlign: 'center', marginBottom: '20px'}}>Debes iniciar sesión para solicitar asistencia.</p>
+                    <p style={styles.textCenter}>Debes iniciar sesión para solicitar asistencia.</p>
                     <button onClick={() => navigate('/login')} style={styles.btn}>IR AL LOGIN</button>
                 </div>
             </div>
@@ -144,7 +142,7 @@ const ServiceForm = () => {
                                                     onClick={() => setSelectedRequest(item)}
                                                     style={styles.btnLeer}
                                                 >📖 Leer</button>
-                                            ) : <span style={{color: '#666', fontSize: '0.8rem'}}>Esperando...</span>}
+                                            ) : <span style={styles.waitingText}>Esperando...</span>}
                                         </td>
                                     </tr>
                                 ))}
@@ -157,16 +155,15 @@ const ServiceForm = () => {
             {/* MODAL PARA RESPUESTA */}
             {selectedRequest && (
                 <div style={styles.modalOverlay} onClick={() => setSelectedRequest(null)}>
-                    {/* onClick en el overlay para cerrar al hacer clic fuera */}
                     <div style={styles.modalContent} onClick={e => e.stopPropagation()}>
-                        <h3 style={{color: '#a855f7', marginTop: 0}}>DETALLE DEL TICKET #{selectedRequest.id}</h3>
+                        <h3 style={styles.modalTitle}>DETALLE DEL TICKET #{selectedRequest.id}</h3>
                         <div style={styles.msgBoxCliente}>
-                            <strong style={{color: '#a855f7'}}>Tu mensaje:</strong>
-                            <p style={{marginTop: '5px', fontSize: '0.9rem', color: '#eee'}}>{selectedRequest.mensaje}</p>
+                            <strong style={styles.msgLabel}>Tu mensaje:</strong>
+                            <p style={styles.msgText}>{selectedRequest.mensaje}</p>
                         </div>
-                        <div style={{...styles.msgBoxCliente, borderLeftColor: '#10b981', backgroundColor: '#050505'}}>
-                            <strong style={{color: '#10b981'}}>Respuesta del Soporte:</strong>
-                            <p style={{marginTop: '5px', fontSize: '0.9rem', color: '#eee'}}>{selectedRequest.respuesta_admin}</p>
+                        <div style={styles.msgBoxAdmin}>
+                            <strong style={styles.msgLabel}>Respuesta del Soporte:</strong>
+                            <p style={styles.msgText}>{selectedRequest.respuesta_admin}</p>
                         </div>
                         <button style={styles.btnCerrar} onClick={() => setSelectedRequest(null)}>CERRAR VENTANA</button>
                     </div>
@@ -180,20 +177,20 @@ const styles = {
     container: { padding: '40px 20px', backgroundColor: '#0b0b0d', minHeight: '100vh', color: '#fff', fontFamily: 'sans-serif' },
     formSection: { maxWidth: '600px', margin: '0 auto 40px auto', backgroundColor: '#1a1a21', padding: '30px', borderRadius: '12px', border: '1px solid #333' },
     title: { textAlign: 'center', marginBottom: '25px', fontSize: '1.5rem', letterSpacing: '1px' },
-    accent: { color: '#a855f7' },
+    accent: { color: '#f755cf' },
     form: { display: 'flex', flexDirection: 'column', gap: '20px' },
     inputGroup: { display: 'flex', flexDirection: 'column', gap: '8px' },
     label: { fontSize: '0.9rem', color: '#ccc', fontWeight: 'bold' },
     input: { padding: '12px', backgroundColor: '#0b0b0d', border: '1px solid #333', borderRadius: '6px', color: '#fff', outline: 'none' },
     textarea: { padding: '12px', backgroundColor: '#0b0b0d', border: '1px solid #333', borderRadius: '6px', color: '#fff', minHeight: '120px', resize: 'vertical', outline: 'none' },
     btn: { padding: '14px', backgroundColor: '#a855f7', color: 'white', border: 'none', borderRadius: '6px', fontWeight: 'bold', cursor: 'pointer', transition: '0.3s' },
-    
+
     historySection: { maxWidth: '900px', margin: '0 auto' },
     historyTitle: { borderBottom: '2px solid #333', paddingBottom: '10px', marginBottom: '20px' },
     tableWrapper: { backgroundColor: '#1a1a21', borderRadius: '8px', overflow: 'hidden', border: '1px solid #333' },
     table: { width: '100%', borderCollapse: 'collapse', textAlign: 'left' },
     headerTr: { backgroundColor: '#25252e', color: '#a855f7' },
-    th: { padding: '15px', fontSize: '0.95rem', fontWeight: 'bold' }, // Añadido th
+    th: { padding: '15px', fontSize: '0.95rem', fontWeight: 'bold' },
     tr: { borderBottom: '1px solid #25252e' },
     td: { padding: '15px', fontSize: '0.9rem' },
     badge: { padding: '4px 8px', borderRadius: '4px', fontSize: '0.7rem', fontWeight: 'bold', color: '#fff' },
@@ -203,7 +200,11 @@ const styles = {
     modalOverlay: { position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', backgroundColor: 'rgba(0,0,0,0.85)', display: 'flex', justifyContent: 'center', alignItems: 'center', zIndex: 2000, backdropFilter: 'blur(4px)' },
     modalContent: { backgroundColor: '#1a1a21', padding: '30px', borderRadius: '15px', width: '90%', maxWidth: '500px', border: '1px solid #a855f7', boxShadow: '0 0 30px rgba(168,85,247,0.2)' },
     msgBoxCliente: { backgroundColor: '#0b0b0d', padding: '15px', borderRadius: '8px', borderLeft: '4px solid #a855f7', margin: '15px 0' },
-    btnCerrar: { width: '100%', padding: '12px', backgroundColor: '#333', color: 'white', border: 'none', borderRadius: '6px', cursor: 'pointer', marginTop: '10px', fontWeight: 'bold' }
+    msgBoxAdmin: { backgroundColor: '#050505', padding: '15px', borderRadius: '8px', borderLeft: '4px solid #10b981', margin: '15px 0' },
+    msgLabel: { color: '#a855f7' },
+    msgText: { marginTop: '5px', fontSize: '0.9rem', color: '#eee' },
+    btnCerrar: { width: '100%', padding: '12px', backgroundColor: '#333', color: 'white', border: 'none', borderRadius: '6px', cursor: 'pointer', marginTop: '10px', fontWeight: 'bold' },
+    waitingText: { color: '#666', fontSize: '0.8rem' }
 };
 
 export default ServiceForm;

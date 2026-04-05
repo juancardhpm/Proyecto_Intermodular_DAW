@@ -1,0 +1,48 @@
+
+body {
+  background: linear-gradient(145deg, #121212, #1e1e1e); /* Fondo oscuro y serio */
+  color: #fff; /* Texto blanco para contraste */
+  font-family: 'Arial', sans-serif;
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+}
+
+.container {
+  padding: 40px 20px;
+  background-color: rgba(255, 255, 255, 0.1); /* Fondo translúcido claro */
+  min-height: 100vh;
+  color: white;
+}
+
+.btn {
+  padding: 14px;
+  background-color: #9b00d3; /* Morado como acento principal */
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.btn:hover {
+  background-color: #00b0ff; /* Azul vibrante para el hover */
+}
+
+.link {
+  color: #fff;
+  text-decoration: none;
+  font-size: 1rem;
+  margin: 0 20px;
+  padding: 10px 20px;
+  background-color: rgba(255, 255, 255, 0.2); /* Fondo translúcido suave */
+  border-radius: 4px;
+  font-weight: 500;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.link:hover {
+  background-color: #ff4d4d; /* Rojo para los enlaces en hover */
+  color: #fff;
+}

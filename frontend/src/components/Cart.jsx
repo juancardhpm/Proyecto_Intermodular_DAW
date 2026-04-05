@@ -110,7 +110,7 @@ const Cart = () => {
 
   return (
     <div style={styles.container}>
-      <h2 style={styles.title}>🛒 TU CARRITO DE JUGADOR</h2>
+      <h2 style={styles.title}>🛒 TU CARRITO</h2>
 
       {cartItems.length > 0 ? (
         <div style={styles.cartWrapper}>
@@ -178,7 +178,7 @@ const Cart = () => {
         </div>
       ) : (
         <div style={styles.emptyCart}>
-          <p>Tu carrito está vacío, soldado.</p>
+          <p>Tu carrito está vacío.</p>
           <button onClick={() => navigate('/catalog')} style={styles.catalogBtn}>VOLVER AL CATÁLOGO</button>
         </div>
       )}
@@ -187,30 +187,167 @@ const Cart = () => {
 };
 
 const styles = {
-    container: { padding: '40px 20px', maxWidth: '1000px', margin: '0 auto', color: '#fff', fontFamily: 'sans-serif' },
-    title: { borderBottom: '2px solid #a855f7', paddingBottom: '10px', marginBottom: '30px', fontWeight: '800' },
-    cartWrapper: { display: 'grid', gridTemplateColumns: '1fr 350px', gap: '20px' },
-    itemsList: { display: 'flex', flexDirection: 'column', gap: '15px' },
-    itemCard: { display: 'flex', alignItems: 'center', backgroundColor: '#15151a', padding: '15px', borderRadius: '10px', border: '1px solid #2d2d35' },
-    itemImg: { width: '80px', height: '80px', objectFit: 'cover', borderRadius: '8px', marginRight: '15px' },
-    itemInfo: { flex: 1 },
-    qtyControls: { display: 'flex', alignItems: 'center', gap: '10px', marginTop: '10px' },
-    qtyBtn: { width: '25px', height: '25px', backgroundColor: '#2d2d35', color: '#fff', border: '1px solid #a855f7', borderRadius: '4px', cursor: 'pointer' },
-    qtyLabel: { fontSize: '1rem', fontWeight: 'bold' },
-    priceSection: { textAlign: 'right' },
-    itemPrice: { fontWeight: 'bold', color: '#a855f7', fontSize: '1.2rem', marginBottom: '5px' },
-    removeBtn: { background: 'none', border: 'none', color: '#ff4d4d', cursor: 'pointer', fontSize: '0.8rem', textDecoration: 'underline' },
-    summaryCard: { backgroundColor: '#15151a', padding: '25px', borderRadius: '12px', border: '1px solid #a855f7', alignSelf: 'start', position: 'sticky', top: '20px' },
-    summaryRow: { display: 'flex', justifyContent: 'space-between', margin: '15px 0', color: '#a1a1aa' },
-    summaryTotal: { display: 'flex', justifyContent: 'space-between', marginTop: '20px', paddingTop: '20px', borderTop: '1px solid #3f3f46', fontWeight: 'bold', fontSize: '1.3rem' },
-    totalAmount: { color: '#a855f7' },
-    checkoutSection: { marginTop: '25px' },
-    userBadge: { color: '#10b981', fontSize: '0.85rem', textAlign: 'center', marginBottom: '15px', backgroundColor: 'rgba(16, 185, 129, 0.1)', padding: '8px', borderRadius: '5px' },
-    guestSection: { marginTop: '25px', textAlign: 'center' },
-    guestText: { fontSize: '0.85rem', color: '#71717a', marginBottom: '15px' },
-    loginBtn: { width: '100%', padding: '15px', backgroundColor: '#a855f7', color: '#fff', border: 'none', borderRadius: '8px', fontWeight: 'bold', cursor: 'pointer', fontSize: '1rem' },
-    emptyCart: { textAlign: 'center', marginTop: '100px' },
-    catalogBtn: { backgroundColor: 'transparent', color: '#a855f7', border: '1px solid #a855f7', padding: '12px 24px', borderRadius: '8px', cursor: 'pointer', marginTop: '20px', fontWeight: 'bold' }
-  };
+  container: {
+    padding: '40px 20px',
+    maxWidth: '1000px',
+    margin: '0 auto',
+    color: '#fff',
+    fontFamily: 'sans-serif',
+    backgroundColor: 'rgba(11, 11, 13, 0.9)', // Fondo con algo de transparencia
+  },
+  title: {
+    borderBottom: '2px solid rgba(168, 85, 247, 0.8)',  // Más suave en lugar de sólido
+    paddingBottom: '10px',
+    marginBottom: '30px',
+    fontWeight: '800',
+  },
+  cartWrapper: {
+    display: 'grid',
+    gridTemplateColumns: '1fr 350px',
+    gap: '20px',
+    color: '#fff',
+    backgroundColor: 'rgba(11, 11, 13, 0.85)', // Fondo translúcido
+  },
+  itemsList: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '15px',
+  },
+  itemCard: {
+    display: 'flex',
+    alignItems: 'center',
+    backgroundColor: 'rgba(51, 51, 51, 0.8)',  // Fondo translúcido y suave
+    padding: '15px',
+    borderRadius: '10px',
+    border: '1px solid rgba(45, 45, 53, 0.5)',  // Borde suave
+    transition: 'transform 0.2s ease',
+    cursor: 'pointer',
+    ':hover': { 
+      transform: 'scale(1.05)', 
+    }
+  },
+  itemImg: {
+    width: '80px',
+    height: '80px',
+    objectFit: 'cover',
+    borderRadius: '8px',
+    marginRight: '15px',
+  },
+  itemInfo: {
+    flex: 1,
+  },
+  qtyControls: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '10px',
+    marginTop: '10px',
+  },
+  qtyBtn: {
+    width: '25px',
+    height: '25px',
+    backgroundColor: '#a855f7',
+    color: '#fff',
+    border: '1px solid rgba(168, 85, 247, 0.8)', // Fondo translúcido en los botones
+    borderRadius: '4px',
+    cursor: 'pointer',
+  },
+  qtyLabel: {
+    fontSize: '1rem',
+    fontWeight: 'bold',
+  },
+  priceSection: {
+    textAlign: 'right',
+  },
+  itemPrice: {
+    fontWeight: 'bold',
+    color: '#a855f7',
+    fontSize: '1.2rem',
+    marginBottom: '5px',
+  },
+  removeBtn: {
+    background: 'none',
+    border: 'none',
+    color: '#ff4d4d',
+    cursor: 'pointer',
+    fontSize: '0.8rem',
+    textDecoration: 'underline',
+  },
+  summaryCard: {
+    backgroundColor: 'rgba(34, 34, 34, 0.8)',  // Fondo con algo de transparencia
+    padding: '25px',
+    borderRadius: '12px',
+    border: '1px solid rgba(168, 85, 247, 0.8)', // Borde sutil transparente
+    alignSelf: 'start',
+    position: 'sticky',
+    top: '20px',
+  },
+  summaryRow: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    margin: '15px 0',
+    color: '#a1a1aa',
+  },
+  summaryTotal: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    marginTop: '20px',
+    paddingTop: '20px',
+    borderTop: '1px solid rgba(63, 63, 70, 0.5)', // Borde transparente para el total
+    fontWeight: 'bold',
+    fontSize: '1.3rem',
+  },
+  totalAmount: {
+    color: '#a855f7',
+  },
+  checkoutSection: {
+    marginTop: '25px',
+  },
+  userBadge: {
+    color: '#10b981',
+    fontSize: '0.85rem',
+    textAlign: 'center',
+    marginBottom: '15px',
+    backgroundColor: 'rgba(16, 185, 129, 0.2)', // Fondo con transparencia para el badge
+    padding: '8px',
+    borderRadius: '5px',
+  },
+  guestSection: {
+    marginTop: '25px',
+    textAlign: 'center',
+  },
+  guestText: {
+    fontSize: '0.85rem',
+    color: '#71717a',
+    marginBottom: '15px',
+  },
+  loginBtn: {
+    width: '100%',
+    padding: '15px',
+    backgroundColor: '#a855f7',
+    color: '#fff',
+    border: 'none',
+    borderRadius: '8px',
+    fontWeight: 'bold',
+    cursor: 'pointer',
+    fontSize: '1rem',
+  },
+  emptyCart: {
+    textAlign: 'center',
+    marginTop: '100px',
+  },
+  catalogBtn: {
+    backgroundColor: 'transparent',
+    color: '#a855f7',
+    border: '1px solid rgba(168, 85, 247, 0.8)', // Fondo con transparencia y borde morado
+    padding: '12px 24px',
+    borderRadius: '8px',
+    cursor: 'pointer',
+    marginTop: '20px',
+    fontWeight: 'bold',
+  },
+};
 
 export default Cart;
+
+
+

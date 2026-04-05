@@ -92,11 +92,12 @@ const Catalog = () => {
   );
 };
 
+// Estilos en un objeto similar al Navbar
 const styles = {
   container: { padding: '40px 20px', backgroundColor: '#0b0b0d', minHeight: '100vh', color: 'white' },
   title: { textAlign: 'center', fontSize: '2.2rem', marginBottom: '30px' },
   accent: { color: '#a855f7', fontWeight: 'bold' },
-  
+
   // Estilos de la barra de filtros
   filterBar: { 
     display: 'flex', flexWrap: 'wrap', gap: '15px', justifyContent: 'center', 

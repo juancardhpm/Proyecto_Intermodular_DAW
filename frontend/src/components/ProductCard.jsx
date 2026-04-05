@@ -57,8 +57,8 @@ const ProductCard = ({ product }) => {
   return (
     <div style={styles.card}>
       <img src={product.imagen_url || 'https://via.placeholder.com/200'} alt={product.nombre} style={styles.img} />
-      <h4>{product.nombre}</h4>
-      <p>{product.descripcion}</p>
+      <h4 style={styles.productName}>{product.nombre}</h4>
+      <p style={styles.description}>{product.descripcion}</p>
       <p style={styles.price}>{product.precio}€</p>
       
       {/* SECCIÓN DE STOCK: Muestra unidades o mensaje de agotado */}
@@ -89,36 +89,64 @@ const ProductCard = ({ product }) => {
 };
 
 const styles = {
-    card: { 
-      backgroundColor: '#15151a', 
-      padding: '15px', 
-      borderRadius: '12px', 
-      border: '1px solid #2d2d35', 
-      color: '#fff', 
-      textAlign: 'center',
-      display: 'flex',
-      flexDirection: 'column',
-      gap: '8px' 
-    },
-    img: { width: '100%', height: '140px', objectFit: 'cover', borderRadius: '8px', marginBottom: '10px' },
-    price: { color: '#a855f7', fontWeight: 'bold', fontSize: '1.2rem' },
-    stockInfo: { margin: '5px 0' },
-    stockBadge: { 
-      fontSize: '0.75rem', 
-      padding: '4px 10px', 
-      borderRadius: '15px', 
-      fontWeight: 'bold',
-      textTransform: 'uppercase'
-    },
-    btn: { 
-      width: '100%', 
-      padding: '10px', 
-      border: 'none', 
-      borderRadius: '6px', 
-      color: '#fff', 
-      fontWeight: 'bold', 
-      transition: '0.3s' 
-    }
+  card: { 
+    background: 'rgba(255, 255, 255, 0.1)',  // Fondo blanco con transparencia
+    padding: '15px', 
+    borderRadius: '12px', 
+    border: '1px solid rgba(255, 255, 255, 0.3)',  // Borde con transparencia para darle un look limpio
+    color: '#fff', 
+    textAlign: 'center',
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '8px',
+    boxShadow: '0 4px 6px rgba(0, 0, 0, 0.2)',  // Sombra para darle profundidad
+    transition: 'transform 0.3s ease',
+    cursor: 'pointer',
+    ':hover': { transform: 'scale(1.05)' }  // Efecto hover para dar un toque dinámico
+  },
+  img: { 
+    width: '100%', 
+    height: '140px', 
+    objectFit: 'cover', 
+    borderRadius: '8px', 
+    marginBottom: '10px',
+    transition: 'transform 0.3s ease',
+    ':hover': { transform: 'scale(1.1)' }  // Efecto hover en la imagen para hacerlo más interactivo
+  },
+  productName: {
+    fontSize: '1.2rem',
+    fontWeight: 'bold',
+    color: '#fff',
+  },
+  description: {
+    fontSize: '0.9rem',
+    color: '#aaa',
+  },
+  price: { 
+    color: '#a855f7',  // Manteniendo el tono morado
+    fontWeight: 'bold', 
+    fontSize: '1.2rem' 
+  },
+  stockInfo: { 
+    margin: '5px 0', 
+  },
+  stockBadge: { 
+    fontSize: '0.75rem', 
+    padding: '4px 10px', 
+    borderRadius: '15px', 
+    fontWeight: 'bold',
+    textTransform: 'uppercase',
+    transition: 'all 0.3s ease',
+  },
+  btn: { 
+    width: '100%', 
+    padding: '10px', 
+    border: 'none', 
+    borderRadius: '6px', 
+    color: '#fff', 
+    fontWeight: 'bold', 
+    transition: '0.3s' 
+  },
 };
 
 export default ProductCard;

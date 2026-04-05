@@ -8,11 +8,11 @@ const sequelize = new Sequelize(
     process.env.DB_PASS,   //Pongo la variables creada en .env referenre a la contraseña de la BBDD
     {
         host: process.env.DB_HOST,  //Pongo la variable de .env diciendo donde esta la BBDD (localhost)
-        dialect: 'mysql',  //Le confirmo a Sequelizo que voy a utilizar MySQL
+        dialect: 'mysql',  //Le confirmo a Sequelize que voy a utilizar MySQL
         port: process.env.DB_PORT,   //Le señalo el puerto configurado en .env de la BBDD de MySQL
-        logging: false,  //Para que la consola de VSc este limpia y no se llene de codigo SQL cada vez que se realiza alguna accion con el BBDD
+        logging: false,  //Para que la consola de VSc este limpia y no se llene de codigo SQL cada vez que se realiza alguna accion con la BBDD
         define: {  //Reglas de las tablas
-            timestamps: false,  //De esta forma evito que Sequelize busque columnas createdAt o updatedAt y me debe error
+            timestamps: false,  //De esta forma evito que Sequelize busque columnas createdAt o updatedAt y me de error
             freezeTableName: true  //Con esto evito que Sequelize le cambie el nombre de las tablas a plural y busque la tabla con el nombre que tiene
         },
         pool: {

@@ -14,6 +14,7 @@ import AdminProducts from './components/AdminProducts';
 import AdminCategories from './components/AdminCategories';
 import ProtectedRoute from './components/ProtectedRoute';
 import UserOrders from './pages/UserOrders'; 
+import Hero from './components/Hero';
 
 const App = () => {
   return (

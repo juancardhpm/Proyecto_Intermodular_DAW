@@ -86,7 +86,7 @@ const Register = () => {
           <input
             name="nombre"
             type="text"
-            placeholder="Nombre de Guerrero"
+            placeholder="Nombre"
             style={styles.input}
             onChange={handleChange}
             required
@@ -146,7 +146,7 @@ const Register = () => {
         </form>
 
         <p style={styles.footerText}>
-          ¿Ya tienes equipo? <Link to="/login" style={styles.link}>Entra aquí</Link>
+          ¿Ya tienes una cuenta? <Link to="/login" style={styles.link}>Entra aquí</Link>
         </p>
       </div>
     </div>

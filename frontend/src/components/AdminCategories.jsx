@@ -79,8 +79,8 @@ const AdminCategories = () => {
     };
 
     return (
-        <div style={{ padding: '20px', color: 'white', backgroundColor: '#1a1a1a', minHeight: '100vh' }}>
-            <h2>Gestión de Categorías</h2>
+        <div style={styles.container}>
+            <h2 style={styles.title}>Gestión de Categorías</h2>
             
             <form onSubmit={handleSubmit} style={styles.form}>
                 <input 
@@ -103,10 +103,10 @@ const AdminCategories = () => {
 
             {mensaje && <p style={{ color: '#10b981' }}>{mensaje}</p>}
 
-            <ul style={{ listStyle: 'none', padding: 0 }}>
+            <ul style={styles.list}>
                 {categorias.map((cat) => (
                     <li key={cat.id} style={styles.listItem}>
-                        <span>{cat.nombre} <small style={{color: '#666'}}>(ID: {cat.id})</small></span>
+                        <span>{cat.nombre} <small style={styles.idText}>(ID: {cat.id})</small></span>
                         <div>
                             <button onClick={() => seleccionarParaEditar(cat)} style={styles.editBtnSmall}>Editar</button>
                             <button onClick={() => eliminarCategoria(cat.id)} style={styles.deleteBtn}>Eliminar</button>
@@ -119,13 +119,58 @@ const AdminCategories = () => {
 };
 
 const styles = {
+    container: { padding: '20px', color: 'white', backgroundColor: '#1a1a1a', minHeight: '100vh' },
+    title: { fontSize: '2.2rem', marginBottom: '20px', textAlign: 'center', color: '#fff' },
     form: { display: 'flex', gap: '10px', marginBottom: '20px' },
-    input: { padding: '8px', borderRadius: '4px', border: '1px solid #444', backgroundColor: '#333', color: 'white', flex: 1 },
-    addBtn: { backgroundColor: '#8b5cf6', color: 'white', padding: '10px 20px', cursor: 'pointer', border: 'none', borderRadius: '5px' },
-    editBtn: { backgroundColor: '#3b82f6', color: 'white', padding: '10px 20px', cursor: 'pointer', border: 'none', borderRadius: '5px' },
-    cancelBtn: { backgroundColor: '#444', color: 'white', padding: '10px 20px', cursor: 'pointer', border: 'none', borderRadius: '5px' },
-    editBtnSmall: { backgroundColor: '#3b82f6', color: 'white', padding: '5px 10px', cursor: 'pointer', border: 'none', borderRadius: '3px', marginRight: '5px' },
-    deleteBtn: { backgroundColor: '#ef4444', color: 'white', padding: '5px 10px', cursor: 'pointer', border: 'none', borderRadius: '3px' },
+    input: { 
+        padding: '8px', 
+        borderRadius: '4px', 
+        border: '1px solid #444', 
+        backgroundColor: '#333', 
+        color: 'white', 
+        flex: 1 
+    },
+    addBtn: { 
+        backgroundColor: '#8b5cf6', 
+        color: 'white', 
+        padding: '10px 20px', 
+        cursor: 'pointer', 
+        border: 'none', 
+        borderRadius: '5px' 
+    },
+    editBtn: { 
+        backgroundColor: '#3b82f6', 
+        color: 'white', 
+        padding: '10px 20px', 
+        cursor: 'pointer', 
+        border: 'none', 
+        borderRadius: '5px' 
+    },
+    cancelBtn: { 
+        backgroundColor: '#444', 
+        color: 'white', 
+        padding: '10px 20px', 
+        cursor: 'pointer', 
+        border: 'none', 
+        borderRadius: '5px' 
+    },
+    editBtnSmall: { 
+        backgroundColor: '#3b82f6', 
+        color: 'white', 
+        padding: '5px 10px', 
+        cursor: 'pointer', 
+        border: 'none', 
+        borderRadius: '3px', 
+        marginRight: '5px' 
+    },
+    deleteBtn: { 
+        backgroundColor: '#ef4444', 
+        color: 'white', 
+        padding: '5px 10px', 
+        cursor: 'pointer', 
+        border: 'none', 
+        borderRadius: '3px' 
+    },
     listItem: { 
         display: 'flex', 
         justifyContent: 'space-between', 
@@ -135,7 +180,9 @@ const styles = {
         background: '#222', 
         marginBottom: '5px', 
         borderRadius: '4px' 
-    }
+    },
+    list: { listStyle: 'none', padding: 0 },
+    idText: { color: '#666' }
 };
 
 export default AdminCategories;

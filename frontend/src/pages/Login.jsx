@@ -68,7 +68,7 @@ const Login = () => {
         <div style={styles.container}>
             <div style={styles.card}>
                 <h2 style={styles.title}>GAMING <span style={styles.accent}>STORE</span></h2>
-                <p style={styles.subtitle}>Accede a tu cuenta de jugador</p>
+                <p style={styles.subtitle}>Accede a tu cuenta </p>
 
                 {error && <div style={styles.errorBanner}>{error}</div>}
 

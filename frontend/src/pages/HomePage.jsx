@@ -1,15 +1,18 @@
 // frontend/src/pages/HomePage.jsx
+
 import React, { useState, useEffect } from 'react';
 import ProductCard from '../components/ProductCard';
-// Importamos tu instancia configurada de axios para que use la URL base correcta
+import Hero from '../components/Hero';
 import api from '../api/axios'; 
 
 const HomePage = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  // Aquí está la URL de tu video de YouTube (reemplaza esto con la URL directa de tu video)
+  const heroVideo = 'https://www.youtube.com/embed/laaz2nH65V4?si=PjPLQFw8d74FNTwI';  // URL de YouTube
+
   useEffect(() => {
-    // Usamos la instancia 'api' y la ruta correcta que definimos en el backend
     api.get('/products') 
       .then(res => {
         setProducts(res.data);
@@ -23,6 +26,9 @@ const HomePage = () => {
 
   return (
     <div style={styles.container}>
+      {/* Aquí pasamos el video al Hero */}
+      <Hero videoUrl={heroVideo} />  {/* Aquí se inserta el Hero con video */}
+
       <header style={styles.header}>
         <h1 style={styles.title}>CATÁLOGO DE <span style={styles.accent}>PRODUCTOS</span></h1>
         <p style={styles.subtitle}>Equípate con la mejor tecnología gaming</p>
@@ -46,7 +52,7 @@ const HomePage = () => {
 const styles = {
   container: {
     padding: '40px 20px',
-    backgroundColor: '#0b0b0d', // Fondo oscuro como el login
+    backgroundColor: '#0b0b0d', 
     minHeight: '100vh',
     color: 'white'
   },
@@ -60,7 +66,7 @@ const styles = {
     marginBottom: '10px'
   },
   accent: {
-    color: '#a855f7', // El morado que estamos usando
+    color: '#a855f7',
     fontWeight: 'bold'
   },
   subtitle: {
@@ -69,7 +75,6 @@ const styles = {
   },
   grid: {
     display: 'grid',
-    // Esto hace que las tarjetas sean responsivas automáticamente
     gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))',
     gap: '25px',
     maxWidth: '1200px',

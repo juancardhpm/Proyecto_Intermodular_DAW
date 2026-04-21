@@ -1,16 +1,16 @@
 // frontend/src/pages/HomePage.jsx
 
 import React, { useState, useEffect } from 'react';
+import Hero from '../components/Hero'; // Asegúrate de importar el Hero
 import ProductCard from '../components/ProductCard';
-import Hero from '../components/Hero';
-import api from '../api/axios'; 
+import api from '../api/axios';
 
 const HomePage = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // Aquí está la URL de la imagen local (ubicada en la carpeta public)
-  const heroImage = '/images/geforce-ces25-post-keynote-gf-article-thumb-hires-3840x2160.jpg';  // URL relativa a la carpeta public
+  // Aquí está la URL del video de YouTube
+  const heroVideo = 'https://www.youtube.com/watch?v=LIPIGPDJOWk';  // URL del video de YouTube
 
   useEffect(() => {
     api.get('/products') 
@@ -26,8 +26,8 @@ const HomePage = () => {
 
   return (
     <div style={styles.container}>
-      {/* Aquí pasamos la URL de la imagen local al Hero */}
-      <Hero imageUrl={heroImage} />  {/* Hero recibe la URL de la imagen local */}
+      {/* Aquí pasamos la URL del video al Hero */}
+      <Hero videoUrl={heroVideo} />  {/* Hero recibe la URL del video */}
 
       <header style={styles.header}>
         <h1 style={styles.title}>CATÁLOGO DE <span style={styles.accent}>PRODUCTOS</span></h1>

@@ -1,3 +1,4 @@
+// frontend/src/App.jsx
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
@@ -14,7 +15,7 @@ import AdminProducts from './components/AdminProducts';
 import AdminCategories from './components/AdminCategories';
 import ProtectedRoute from './components/ProtectedRoute';
 import UserOrders from './pages/UserOrders'; 
-import Hero from './components/Hero';
+import Footer from './components/Footer'; // Importar el Footer
 
 const App = () => {
   return (
@@ -31,7 +32,7 @@ const App = () => {
         <Route path='/serviceform' element={<ServiceForm />} />
         <Route path="/mis-pedidos" element={<UserOrders />} />
 
-        {/* Rutas del Administrador - Ajustadas para coincidir con Navbar */}
+        {/* Rutas del Administrador */}
         <Route path='/admin' element={
           <ProtectedRoute>
             <AdminProducts />
@@ -44,7 +45,6 @@ const App = () => {
           </ProtectedRoute>
         } />
 
-        {/* Ambas rutas usan el Dashboard, el cual filtrará por pestañas */}
         <Route path='/admin/pedidos' element={
           <ProtectedRoute>
             <AdminDashboard />
@@ -57,6 +57,8 @@ const App = () => {
           </ProtectedRoute>
         } />
       </Routes>
+
+      <Footer /> {/* Agregar el Footer aquí */}
     </Router>
   );
 };

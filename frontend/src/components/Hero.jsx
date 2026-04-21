@@ -1,17 +1,14 @@
 // frontend/src/components/Hero.jsx
+
 import React from 'react';
 
-const Hero = ({ videoUrl }) => {
+const Hero = ({ imageUrl }) => {
   return (
     <section style={styles.hero}>
-      <iframe
-        width="100%"
-        height="100%"
-        src={videoUrl}
-        frameBorder="0"
-        allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-        allowFullScreen
-        style={styles.video}
+      <img 
+        src={imageUrl} 
+        alt="Hero Background" 
+        style={styles.image} 
       />
       <div style={styles.heroContent}>
         <h1 style={styles.heroTitle}>La mejor tecnología para los jugadores más exigentes</h1>
@@ -29,7 +26,7 @@ const styles = {
     justifyContent: 'center',
     alignItems: 'center',
   },
-  video: {
+  image: {
     position: 'absolute',
     top: '0',
     left: '0',

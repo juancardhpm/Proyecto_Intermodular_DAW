@@ -9,8 +9,8 @@ const HomePage = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // Aquí está la URL de tu video de YouTube (reemplaza esto con la URL directa de tu video)
-  const heroVideo = 'https://www.youtube.com/embed/laaz2nH65V4?si=PjPLQFw8d74FNTwI';  // URL de YouTube
+  // Aquí está la URL de la imagen externa (reemplaza con tu enlace de imagen)
+  const heroImage = 'https://www.nvidia.com/es-la/geforce/news/rtx-50-series-graphics-cards-gpu-laptop-announcements/';  // URL de imagen externa
 
   useEffect(() => {
     api.get('/products') 
@@ -26,8 +26,8 @@ const HomePage = () => {
 
   return (
     <div style={styles.container}>
-      {/* Aquí pasamos el video al Hero */}
-      <Hero videoUrl={heroVideo} />  {/* Aquí se inserta el Hero con video */}
+      {/* Aquí pasamos la imagen URL al Hero */}
+      <Hero imageUrl={heroImage} />  {/* Hero recibe la URL de la imagen */}
 
       <header style={styles.header}>
         <h1 style={styles.title}>CATÁLOGO DE <span style={styles.accent}>PRODUCTOS</span></h1>

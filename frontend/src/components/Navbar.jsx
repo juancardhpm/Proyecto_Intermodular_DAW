@@ -29,7 +29,7 @@ const Navbar = () => {
     <nav style={styles.navbar}>
       <div style={styles.navContent}>
         {/* Logo */}
-        <Link to="/" style={styles.logo}>🕹️ GAMING JCS</Link>
+        <Link to="/" style={styles.logo}>🕹️ GAMING STORE JCS</Link>
 
         {/* Menú hamburguesa */}
         <div style={styles.hamburgerMenu} onClick={() => setIsMenuOpen(!isMenuOpen)}>

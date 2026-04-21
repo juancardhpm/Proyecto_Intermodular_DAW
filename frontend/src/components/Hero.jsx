@@ -32,8 +32,8 @@ const styles = {
     left: '0',
     width: '100%',
     height: '100%',
-    objectFit: 'cover',
-    zIndex: '-1',
+    objectFit: 'cover', // Asegura que la imagen cubra toda el área sin distorsionarse
+    zIndex: '-1', // La imagen debe estar detrás del contenido
   },
   heroContent: {
     position: 'absolute',

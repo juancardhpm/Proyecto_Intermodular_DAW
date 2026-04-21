@@ -9,8 +9,8 @@ const HomePage = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // Aquí está la URL de la imagen externa (reemplaza con tu enlace de imagen)
-  const heroImage = 'https://www.nvidia.com/es-la/geforce/news/rtx-50-series-graphics-cards-gpu-laptop-announcements/';  // URL de imagen externa
+  // Aquí está la URL de la imagen local (ubicada en la carpeta public)
+  const heroImage = '/images/geforce-ces25-post-keynote-gf-article-thumb-hires-3840x2160.jpg';  // URL relativa a la carpeta public
 
   useEffect(() => {
     api.get('/products') 
@@ -26,8 +26,8 @@ const HomePage = () => {
 
   return (
     <div style={styles.container}>
-      {/* Aquí pasamos la imagen URL al Hero */}
-      <Hero imageUrl={heroImage} />  {/* Hero recibe la URL de la imagen */}
+      {/* Aquí pasamos la URL de la imagen local al Hero */}
+      <Hero imageUrl={heroImage} />  {/* Hero recibe la URL de la imagen local */}
 
       <header style={styles.header}>
         <h1 style={styles.title}>CATÁLOGO DE <span style={styles.accent}>PRODUCTOS</span></h1>

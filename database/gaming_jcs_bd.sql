@@ -185,11 +185,18 @@ CREATE TABLE `productos` (
 -- Volcado de datos para la tabla `productos`
 --
 
-INSERT INTO `productos` (`id`, `categoria_id`, `nombre`, `descripcion`, `precio`, `stock`, `activo`, `imagen_url`) VALUES
-(1, 2, 'Producto Prueba2', 'Prodcuto de prueba', 20.00, 99, 'si', ''),
-(2, 1, 'RTX4090 Prueba', 'RTX4090 Prueba', 2000.00, 99, 'si', 'https://thumb.pccomponentes.com/w-530-530/articles/1066/10661819/1314-msi-geforce-rtx-4090-suprim-24gb-gddr6x.jpg'),
-(3, 1, 'Prueba de titulo de producto', 'Esto es la descripcion de la prueba de un producto', 100.00, 100, 'si', '');
-
+INSERT INTO `productos` (`categoria_id`, `nombre`, `descripcion`, `precio`, `stock`, `activo`, `imagen_url`) 
+VALUES 
+(1, 'MSI GeForce RTX 3080', 'Tarjeta gráfica de alto rendimiento para gamers', 800.00, 50, 'si', 'https://example.com/rtx3080.jpg'),
+(1, 'Gigabyte Radeon RX 6800 XT', 'Tarjeta gráfica potente para juegos en 4K', 1000.00, 30, 'si', 'https://example.com/rx6800xt.jpg'),
+(2, 'Intel Core i7-12700K', 'Procesador de alto rendimiento para PC gaming y estaciones de trabajo', 350.00, 40, 'si', 'https://example.com/i712700k.jpg'),
+(2, 'AMD Ryzen 9 5900X', 'Procesador AMD de 12 núcleos ideal para multitarea y gaming', 750.00, 45, 'si', 'https://example.com/ryzen95900x.jpg'),
+(1, 'NVIDIA GeForce GTX 1660', 'Tarjeta gráfica de gama media ideal para gaming 1080p', 250.00, 60, 'si', 'https://example.com/gtx1660.jpg'),
+(2, 'Corsair Vengeance LPX 16GB DDR4', 'Memoria RAM DDR4 de 16 GB para aumentar el rendimiento de tu PC', 80.00, 80, 'si', 'https://example.com/ramcorsair.jpg'),
+(2, 'Kingston A2000 500GB SSD', 'Disco SSD NVMe para mejorar la velocidad de carga de tu PC', 60.00, 70, 'si', 'https://example.com/kingstonssd.jpg'),
+(2, 'Samsung 970 EVO Plus 1TB', 'SSD NVMe M.2 de alto rendimiento para PC de alta gama', 150.00, 50, 'si', 'https://example.com/samsungssd.jpg'),
+(1, 'MSI MAG 27" Gaming Monitor', 'Monitor gaming de 27 pulgadas con frecuencia de actualización de 144Hz', 350.00, 30, 'si', 'https://example.com/msimonitor.jpg'),
+(1, 'Logitech G502 Hero', 'Ratón gaming con sensor de alta precisión y 11 botones programables', 50.00, 100, 'si', 'https://example.com/g502hero.jpg');
 -- --------------------------------------------------------
 
 --

@@ -185,18 +185,11 @@ CREATE TABLE `productos` (
 -- Volcado de datos para la tabla `productos`
 --
 
-INSERT INTO `productos` (`categoria_id`, `nombre`, `descripcion`, `precio`, `stock`, `activo`, `imagen_url`) 
-VALUES 
-(1, 'MSI GeForce RTX 3080', 'Tarjeta gráfica de alto rendimiento para gamers', 800.00, 50, 'si', 'https://m.media-amazon.com/images/I/81lBqpfoncS.jpg'),
-(1, 'Gigabyte Radeon RX 6800 XT', 'Tarjeta gráfica potente para juegos en 4K', 1000.00, 30, 'si', 'https://thumb.pccomponentes.com/w-530-530/articles/34/346794/1373-gigabyte-amd-radeon-rx-6800-xt-gaming-oc-16gb-gddr6-0268144c-1264-4d35-b844-cb055f2897bd.jpgV'),
-(2, 'Intel Core i7-12700K', 'Procesador de alto rendimiento para PC gaming y estaciones de trabajo', 350.00, 40, 'si', 'https://assets.mmsrg.com/isr/166325/c1/-/ASSET_MP_104126887?x=536&y=402&format=jpg&quality=80&sp=yes&strip=yes&trim&ex=536&ey=402&align=center&resizesource&unsharp=1.5x1+0.7+0.02&cox=0&coy=0&cdx=536&cdy=402'),
-(2, 'AMD Ryzen 9 5900X', 'Procesador AMD de 12 núcleos ideal para multitarea y gaming', 750.00, 45, 'si', 'https://cdn.ibertronica.es/product/MI100-100000061WOF_00001.jpeg'),
-(1, 'NVIDIA GeForce GTX 1660', 'Tarjeta gráfica de gama media ideal para gaming 1080p', 250.00, 60, 'si', 'https://m.media-amazon.com/images/I/81gN7myaekL.jpg'),
-(2, 'Corsair Vengeance LPX 16GB DDR4', 'Memoria RAM DDR4 de 16 GB para aumentar el rendimiento de tu PC', 80.00, 80, 'si', 'https://www.static-src.com/wcsstore/Indraprastha/images/catalog/full//85/MTA-9234211/corsair_corsair_vengeance_lpx_16gb_-2x8gb-_pc3600_mhz_cmk16gx4m2d3600c18_full01_iti9ynqt.jpg'),
-(2, 'Kingston A2000 500GB SSD', 'Disco SSD NVMe para mejorar la velocidad de carga de tu PC', 60.00, 70, 'si', 'https://img.pccomponentes.com/articles/22/225080/1.jpg'),
-(2, 'Samsung 970 EVO Plus 1TB', 'SSD NVMe M.2 de alto rendimiento para PC de alta gama', 150.00, 50, 'si', 'https://assets.mmsrg.com/isr/166325/c1/-/ASSET_MP_152635309?x=536&y=402&format=jpg&quality=80&sp=yes&strip=yes&trim&ex=536&ey=402&align=center&resizesource&unsharp=1.5x1+0.7+0.02&cox=0&coy=0&cdx=536&cdy=402'),
-(1, 'MSI MAG 27" Gaming Monitor', 'Monitor gaming de 27 pulgadas con frecuencia de actualización de 144Hz', 350.00, 30, 'si', 'https://m.media-amazon.com/images/I/71pyZ31Cu1L._AC_UF894,1000_QL80_.jpg'),
-(1, 'Logitech G502 Hero', 'Ratón gaming con sensor de alta precisión y 11 botones programables', 50.00, 100, 'si', 'https://thumb.pccomponentes.com/w-530-530/articles/17/179806/1044-logitech-g502-hero-raton-gaming-16000dpi-7240de56-3e16-43bd-b449-639f9bfa5e62.jpg');
+INSERT INTO `productos` (`id`, `categoria_id`, `nombre`, `descripcion`, `precio`, `stock`, `activo`, `imagen_url`) VALUES
+(1, 2, 'Producto Prueba2', 'Prodcuto de prueba', 20.00, 99, 'si', ''),
+(2, 1, 'RTX4090 Prueba', 'RTX4090 Prueba', 2000.00, 99, 'si', 'https://thumb.pccomponentes.com/w-530-530/articles/1066/10661819/1314-msi-geforce-rtx-4090-suprim-24gb-gddr6x.jpg'),
+(3, 1, 'Prueba de titulo de producto', 'Esto es la descripcion de la prueba de un producto', 100.00, 100, 'si', '');
+
 -- --------------------------------------------------------
 
 --

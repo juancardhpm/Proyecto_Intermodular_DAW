@@ -1,36 +1,82 @@
 // frontend/src/components/Footer.jsx
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 const Footer = () => {
   const [hoveredItem, setHoveredItem] = useState(null);
+  const [screen, setScreen] = useState('desktop');
 
   const year = new Date().getFullYear();
 
+  useEffect(() => {
+    const handleResize = () => {
+      const width = window.innerWidth;
+
+      if (width <= 640) {
+        setScreen('mobile');
+      } else if (width <= 1024) {
+        setScreen('tablet');
+      } else {
+        setScreen('desktop');
+      }
+    };
+
+    handleResize();
+    window.addEventListener('resize', handleResize);
+
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  const isMobile = screen === 'mobile';
+  const isTablet = screen === 'tablet';
+
   const getFooterLinkStyle = (key) => ({
     ...styles.footerLink,
-    ...(hoveredItem === key ? styles.footerLinkHover : {})
+    ...(hoveredItem === key ? styles.footerLinkHover : {}),
+    ...(isMobile ? styles.footerLinkMobile : {})
   });
 
   const getSocialStyle = (key) => ({
     ...styles.socialIcon,
-    ...(hoveredItem === key ? styles.socialIconHover : {})
+    ...(hoveredItem === key ? styles.socialIconHover : {}),
+    ...(isMobile ? styles.socialIconMobile : {})
   });
 
   return (
-    <footer style={styles.footer}>
+    <footer
+      style={{
+        ...styles.footer,
+        ...(isMobile ? styles.footerMobile : {})
+      }}
+    >
       <div style={styles.topGlow}></div>
 
       <div style={styles.container}>
-        <div style={styles.footerGrid}>
+        <div
+          style={{
+            ...styles.footerGrid,
+            gridTemplateColumns: isMobile
+              ? '1fr'
+              : isTablet
+                ? '1fr 1fr'
+                : 'minmax(260px, 1.4fr) repeat(3, minmax(180px, 1fr))',
+            gap: isMobile ? '26px' : '34px',
+          }}
+        >
           {/* Marca */}
-          <div style={styles.brandBlock}>
+          <div
+            style={{
+              ...styles.brandBlock,
+              ...(isMobile ? styles.brandBlockMobile : {})
+            }}
+          >
             <Link
               to="/"
               style={{
                 ...styles.logo,
-                ...(hoveredItem === 'logo' ? styles.logoHover : {})
+                ...(hoveredItem === 'logo' ? styles.logoHover : {}),
+                ...(isMobile ? styles.logoMobile : {})
               }}
               onMouseEnter={() => setHoveredItem('logo')}
               onMouseLeave={() => setHoveredItem(null)}
@@ -41,7 +87,12 @@ const Footer = () => {
               <span>STORE</span>
             </Link>
 
-            <p style={styles.brandText}>
+            <p
+              style={{
+                ...styles.brandText,
+                ...(isMobile ? styles.brandTextMobile : {})
+              }}
+            >
               Tecnología gaming, periféricos y componentes para jugadores que buscan rendimiento,
               diseño y una experiencia superior.
             </p>
@@ -53,7 +104,12 @@ const Footer = () => {
           </div>
 
           {/* Navegación */}
-          <div style={styles.column}>
+          <div
+            style={{
+              ...styles.column,
+              ...(isMobile ? styles.columnMobile : {})
+            }}
+          >
             <h4 style={styles.columnTitle}>Navegación</h4>
 
             <Link
@@ -94,7 +150,12 @@ const Footer = () => {
           </div>
 
           {/* Soporte */}
-          <div style={styles.column}>
+          <div
+            style={{
+              ...styles.column,
+              ...(isMobile ? styles.columnMobile : {})
+            }}
+          >
             <h4 style={styles.columnTitle}>Soporte</h4>
 
             <span style={styles.infoText}>Atención personalizada</span>
@@ -104,10 +165,20 @@ const Footer = () => {
           </div>
 
           {/* Redes */}
-          <div style={styles.column}>
+          <div
+            style={{
+              ...styles.column,
+              ...(isMobile ? styles.columnMobile : {})
+            }}
+          >
             <h4 style={styles.columnTitle}>Comunidad</h4>
 
-            <div style={styles.socialIcons}>
+            <div
+              style={{
+                ...styles.socialIcons,
+                ...(isMobile ? styles.socialIconsMobile : {})
+              }}
+            >
               <a
                 href="https://facebook.com"
                 style={getSocialStyle('facebook')}
@@ -153,12 +224,27 @@ const Footer = () => {
           </div>
         </div>
 
-        <div style={styles.bottomBar}>
-          <p style={styles.copyText}>
+        <div
+          style={{
+            ...styles.bottomBar,
+            ...(isMobile ? styles.bottomBarMobile : {})
+          }}
+        >
+          <p
+            style={{
+              ...styles.copyText,
+              ...(isMobile ? styles.copyTextMobile : {})
+            }}
+          >
             &copy; {year} JCS Gaming Store. Todos los derechos reservados.
           </p>
 
-          <div style={styles.bottomLinks}>
+          <div
+            style={{
+              ...styles.bottomLinks,
+              ...(isMobile ? styles.bottomLinksMobile : {})
+            }}
+          >
             <span style={styles.bottomItem}>Gaming</span>
             <span style={styles.separator}>/</span>
             <span style={styles.bottomItem}>Hardware</span>
@@ -223,6 +309,11 @@ const styles = {
     boxShadow: '0 -18px 60px rgba(0, 0, 0, 0.45)',
   },
 
+  footerMobile: {
+    marginTop: '45px',
+    padding: '42px 16px 22px',
+  },
+
   topGlow: {
     position: 'absolute',
     top: '-90px',
@@ -243,8 +334,6 @@ const styles = {
 
   footerGrid: {
     display: 'grid',
-    gridTemplateColumns: 'minmax(260px, 1.4fr) repeat(3, minmax(180px, 1fr))',
-    gap: '34px',
     alignItems: 'flex-start',
   },
 
@@ -255,6 +344,11 @@ const styles = {
       'linear-gradient(145deg, rgba(255,255,255,0.08), rgba(255,255,255,0.025)), rgba(18,18,24,0.65)',
     border: '1px solid rgba(255,255,255,0.1)',
     boxShadow: '0 18px 45px rgba(0,0,0,0.28)',
+  },
+
+  brandBlockMobile: {
+    textAlign: 'center',
+    padding: '22px 18px',
   },
 
   logo: {
@@ -270,6 +364,11 @@ const styles = {
     letterSpacing: '1.6px',
     transition: 'all 0.3s ease',
     textShadow: '0 0 18px rgba(168, 85, 247, 0.35)',
+  },
+
+  logoMobile: {
+    justifyContent: 'center',
+    fontSize: '1.1rem',
   },
 
   logoHover: {
@@ -291,6 +390,10 @@ const styles = {
     color: '#a1a1aa',
     fontSize: '0.95rem',
     lineHeight: 1.6,
+  },
+
+  brandTextMobile: {
+    fontSize: '0.9rem',
   },
 
   statusBox: {
@@ -322,6 +425,15 @@ const styles = {
     gap: '11px',
   },
 
+  columnMobile: {
+    alignItems: 'center',
+    textAlign: 'center',
+    padding: '18px',
+    borderRadius: '20px',
+    background: 'rgba(255,255,255,0.035)',
+    border: '1px solid rgba(255,255,255,0.07)',
+  },
+
   columnTitle: {
     margin: '0 0 8px',
     color: '#fff',
@@ -337,6 +449,11 @@ const styles = {
     fontSize: '0.92rem',
     fontWeight: 700,
     transition: 'all 0.25s ease',
+  },
+
+  footerLinkMobile: {
+    width: '100%',
+    padding: '8px 0',
   },
 
   footerLinkHover: {
@@ -357,6 +474,11 @@ const styles = {
     gap: '11px',
   },
 
+  socialIconsMobile: {
+    width: '100%',
+    alignItems: 'center',
+  },
+
   socialIcon: {
     display: 'inline-flex',
     alignItems: 'center',
@@ -374,6 +496,11 @@ const styles = {
     textTransform: 'uppercase',
     letterSpacing: '0.7px',
     transition: 'all 0.25s ease',
+  },
+
+  socialIconMobile: {
+    width: '100%',
+    maxWidth: '260px',
   },
 
   socialIconHover: {
@@ -406,10 +533,23 @@ const styles = {
     flexWrap: 'wrap',
   },
 
+  bottomBarMobile: {
+    flexDirection: 'column',
+    justifyContent: 'center',
+    textAlign: 'center',
+    marginTop: '30px',
+    gap: '12px',
+  },
+
   copyText: {
     margin: 0,
     color: '#71717a',
     fontSize: '0.88rem',
+  },
+
+  copyTextMobile: {
+    fontSize: '0.82rem',
+    lineHeight: 1.5,
   },
 
   bottomLinks: {
@@ -421,6 +561,12 @@ const styles = {
     fontWeight: 800,
     textTransform: 'uppercase',
     letterSpacing: '1px',
+  },
+
+  bottomLinksMobile: {
+    justifyContent: 'center',
+    flexWrap: 'wrap',
+    fontSize: '0.76rem',
   },
 
   bottomItem: {
